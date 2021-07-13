@@ -7,6 +7,7 @@ public class Owner {
   Scanner sc = null;
   String[] orderStatus= {"접수중","접수 완료","접수 취소"};
 
+
   //Owner 생성자에서 BitOrderSystem 클래스의 db, sc 를 가지고 온다.
   Owner() {
     this.db = BitOrderSystem.db;
@@ -23,7 +24,7 @@ public class Owner {
 
         switch (menuNum) {
           case 1: enrollMenu(); break;
-          case 2: modifyMenu(): break;
+          case 2: modifyMenu(); break;
           case 3: acceptOrder(); break;
           case 4: notice(); break;
           case 5: return;
@@ -88,7 +89,3 @@ public class Owner {
     //db.store 테이블을 조회하는 메서드.
   }
 }
-
-
-
-

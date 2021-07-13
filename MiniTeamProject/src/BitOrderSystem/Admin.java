@@ -15,8 +15,21 @@ public class Admin {
 	// 관리자 메뉴를 보여주는 메소드
 	public void process() {
 		System.out.println("[관리자 메뉴]");
-		System.out.print("[1. 가게등록  2. 가게수정]");
+		System.out.print("[1. 가게등록  2. 가게수정] >> ");
+		int index = Integer.parseInt(sc.nextLine());
+		switch(index) {
+			case 1:
+			    //가게등록 메소드 작동
+				break;
+			case 2:
+			    //가게수정 메소드 작동
+				break;
+		}
 	}
+	
+	// public 가게등록 메소드 장동....
+	
+	// public 가게수정 메소드 작동...
 	
 	
 //	public void enrollStore() {
