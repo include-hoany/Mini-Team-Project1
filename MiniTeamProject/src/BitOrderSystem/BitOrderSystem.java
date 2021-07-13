@@ -33,7 +33,7 @@ public class BitOrderSystem {
     }
   }
 
-  // ID와 PW를 입력받는 메소드
+  // ID와 PW를 입력받아 OrderDB
   public static void login() {
     System.out.print("아이디 >> ");
     String id = sc.nextLine().trim();
@@ -60,8 +60,5 @@ public class BitOrderSystem {
         System.out.println("아이디 또는 패스워드가 맞지 않습니다.");
     }
   }
-
-
-
 
 }
