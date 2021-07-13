@@ -31,7 +31,8 @@ public class OrderDb {
     } catch(Exception e) {
       System.out.println("알수없는 오류..");
 
-    }
+    } // end try / catch
+
   } // end constructor OrderDb
 
   // 가게 아이디 데이터베이스 등록 메소드
@@ -50,10 +51,13 @@ public class OrderDb {
         System.out.println("가게아이디 등록에 성공하였습니다.");
       } else {
         System.out.println("가게아이디 등록에 실패하였습니다.");
-      }
+
+      } // end if else
+
     } catch (SQLException e) {
       e.printStackTrace();
-    }
+
+    } // end try / catch
 
   } // end Method insertStoreMember
 
@@ -68,11 +72,15 @@ public class OrderDb {
 
       while(rs.next()) {
         temp =  rs.getInt("MMSQ");
-      }
+
+      } // end While
+
       return temp;
     } catch (SQLException e) {
       e.printStackTrace();
-    }
+
+    } // end try / catch
+
     return temp;
 
   } // end Method searchStoreId
@@ -93,10 +101,13 @@ public class OrderDb {
         System.out.println("가게등록이 완료 되었습니다.");
       } else {
         System.out.println("가게등록에 실패하였습니다.");
-      }
+
+      } // end if else
+
     } catch (SQLException e) {
       e.printStackTrace();
-    }
+
+    } // end try / catch
 
   } // end Method insertStoreTable
 
@@ -111,20 +122,24 @@ public class OrderDb {
       pstmt.setString(1, id);
       pstmt.setString(2, pw);
       rs = pstmt.executeQuery();
+
       while(rs.next()) {
         LoginSession.mmsq = rs.getInt("MMSQ");
         LoginSession.id = rs.getString("ID");
         LoginSession.nickname = rs.getString("NICKNAME");
         LoginSession.authority = rs.getString("AUTHORITY");
-        LoginSession.isLogin = true;		
-      }
+        LoginSession.isLogin = true;	
+
+      } // end while
+
     } catch (SQLException e) {
       e.printStackTrace();
-    }
+
+    } // end try / catch
 
   } // end Method loginsql
 
-  // 현재 등록되어 있는 가게 아이디를 확인하는 메소드
+  // 현재 등록되어 있는 가게 리스트를 출력하는 메소드
   public void searchStoreList() {
     String sql = "SELECT * FROM MEMBERMANAGER m, STORE s WHERE m.AUTHORITY =" 
         + "'" + "STORE" + "'" + "and m.MMSQ = s.MMSQ";
@@ -133,23 +148,61 @@ public class OrderDb {
       rs= pstmt.executeQuery();
 
       System.out.println("\n[가게목록]");
-      System.out.println(" ----------------------------------------------------------------------------------------------------------------------------------");
-      System.out.printf("| %-5s\t| %-5s\t| %-20s\t\t| %-50s\t| %-5s\t|%n","가게번호", "전화번호", "가게명", "주소", "카테고리");
-      System.out.println(" ---------------------------------------------------------------------------------------------------------------");
+      System.out.println(" -------------------------------------------------------------------------------------------------------------------------------");
+      System.out.printf("| %-5s\t| %-5s\t| %-20s\t| %-40s\t| %-5s\t|%n","가게번호", "전화번호", "가게명", "주소", "카테고리");
+      System.out.println(" -------------------------------------------------------------------------------------------------------------------------------");
       while(rs.next()) {
-        System.out.printf("| %-10d\t| %-10s\t| %-20s\t\t| %-45s\t| %-10s\t|%n",
+        System.out.printf("| %-10d\t| %-10s\t| %-20s\t| %-30s\t| %-10s\t|%n",
             rs.getInt("MMSQ"),
             rs.getString("PHONE"),
             rs.getString("STORENAME"),
             rs.getString("ADDRESS"),
             rs.getString("CATEGORY"));
-      }
-      System.out.println(" ---------------------------------------------------------------------------------------------------------------");
+
+      } // end while
+
+      System.out.println(" -------------------------------------------------------------------------------------------------------------------------------");
+
     } catch (SQLException e) {
       e.printStackTrace();
-    }
+
+    } // end try / catch
 
   } // end Method searchStoreList
+
+  // 가게의 속성을 데이터베이스에 갱신하는 메소드
+  public void updateStoreMemberTable(int mmsq, String phone) {
+    String sql = "UPDATE MEMBERMANAGER SET PHONE=? WHERE MMSQ=?";
+    try {
+      pstmt = conn.prepareStatement(sql);
+      pstmt.setString(1, phone);
+      pstmt.setInt(2, mmsq);
+      if(pstmt.executeUpdate() > 0) {}
+      else { System.out.println("가게 속성 업데이트 오류.");} // end if else
+    } catch (SQLException sqle) {
+      sqle.printStackTrace();
+
+    } // end try / catch
+
+  } // end Method updateStoreMemberTable
+
+  // 가게 속성중 STORE테이블의 값을 갱신하는 메소드
+  public void updateStoreTable(int mmsq, String storename, String address, String category) {
+    String sql = "UPDATE STORE SET STORENAME=?, ADDRESS=?, CATEGORY=? WHERE MMSQ=?";
+    try {
+      pstmt = conn.prepareStatement(sql);
+      pstmt.setString(1, storename);
+      pstmt.setString(2, address);
+      pstmt.setString(3, category);
+      pstmt.setInt(4, mmsq);
+      if(pstmt.executeUpdate() > 0) {}
+      else { System.out.println("가게 속성 업데이트 오류.");} // end if else
+    } catch(SQLException sqle) {
+      sqle.printStackTrace();
+
+    } // end try / catch
+
+  } // end Method updateStoreTable
 
   // 프로그램 종료시 데이터베이스와의 연결을 해제하는 메소드
   public void closeDb() {
@@ -159,7 +212,8 @@ public class OrderDb {
       if(rs != null) rs.close();
     } catch (SQLException sqle) {
       System.out.println("데이터베이스 연결 해제 오류");
-    }
+
+    } // end try / catch
 
   } // end Method closeDb
 
