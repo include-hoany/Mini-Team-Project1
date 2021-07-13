@@ -20,7 +20,7 @@ public class Owner {
     while(true) {
       try {
         System.out.println("[가게 메뉴]");
-        System.out.print("[ 1. 메뉴등록  2. 메뉴가격수정 3. 주문접수 4. 공지 5. 종료 ]");
+        System.out.print("[ 1. 메뉴등록  2. 메뉴가격수정 3. 주문접수 4. 공지 9. 로그아웃 ]");
         int menuNum=Integer.parseInt(sc.nextLine());
 
         switch (menuNum) {
@@ -28,7 +28,10 @@ public class Owner {
           case 2: modifyMenu(); break;
           case 3: acceptOrder(); break;
           case 4: notice(); break;
-          case 5: return;
+          case 9: 
+            System.out.println("가게 로그아웃\n");
+            LoginSession.logout(); 
+            return;
           default :
             System.out.println("잘못 입력하였습니다.");
             break;

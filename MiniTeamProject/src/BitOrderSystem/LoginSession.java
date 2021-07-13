@@ -1,5 +1,6 @@
 package BitOrderSystem;
 
+// LoginSession 클래스는 로그인 정보를 담기위한 스타틱 변수를 가지고 있는 클래스
 public class LoginSession {
   static int mmsq = 0;
   static boolean isLogin = false;

@@ -10,6 +10,7 @@ public class Admin {
   Admin() {
     this.db = BitOrderSystem.db;
     this.sc = BitOrderSystem.sc;
+
   }
 
   // 관리자 메뉴를 보여주는 메소드
@@ -18,22 +19,30 @@ public class Admin {
     int index = 9;
     adminloop: 
       while(true) {
-        System.out.print("[ 1. 가게등록  2. 가게수정  9.로그아웃 ] >> ");
-        index = Integer.parseInt(sc.nextLine());
-        switch(index) {
-          case 1:
-            this.enrollStore();
-            //가게등록 메소드 작동
-            break;
-          case 2:
-            //가게수정 메소드 작동
-            break;
-          case 9:
-            System.out.println("관리자 로그아웃");
-            LoginSession.logout();
-            break adminloop;
-          default:
-            System.out.println("잘못된 입력값 입니다.");
+        try {
+          System.out.print("[ 1. 가게등록  2. 가게수정  9.로그아웃 ] >> ");
+          index = Integer.parseInt(sc.nextLine());
+          switch(index) {
+            case 1:
+              //가게등록 메소드 작동
+              this.enrollStore();
+              break;
+            case 2:
+              //가게수정 메소드 작동
+              this.midifyStroe();
+              break;
+            case 9:
+              System.out.println("관리자 로그아웃\n");
+              LoginSession.logout();
+              break adminloop;
+            default:
+              System.out.println("잘못된 입력값 입니다.");
+          }
+        } catch(NumberFormatException nfe) {
+          System.out.println("숫자만 입력해 주세요.");
+        } catch(Exception e) {
+          System.out.println("알수없는 에러..");
+          e.printStackTrace();
         }
       }
 
@@ -55,12 +64,27 @@ public class Admin {
     String address = sc.nextLine().trim();
     System.out.print("카테고리 >> ");
     String category = sc.nextLine().trim();
+
+    // 쓰레드 슬립을 사용한 이유는 혹시나 빠르게 디비 연산을 하다보면 돌연사 할까봐...
+    try {Thread.sleep(2000);} catch (InterruptedException ic) {}
     db.insertStoreMember(id, pw, nickname, pn);
+
+    try {Thread.sleep(2000);} catch (InterruptedException ic) {}
+
     int tempMMSQ = db.searchStoreId(id);
+    try {Thread.sleep(2000);} catch (InterruptedException ic) {}
     db.insertStoreTable(tempMMSQ, storename, address, category);
+
   }
 
   // public 가게수정 메소드 작동...
+  public void midifyStroe() {
+    // 어떤 가게를 수정할지 확인하기 위해
+    /// 어떤 가게들이 있는지 확인하고 수정할 가게번호를 찾아 수정한다.
+    db.searchStoreList();
+    System.out.print("수정할 가게번호 >> ");
+    String id = sc.nextLine().trim();
+  }
 
 
 
