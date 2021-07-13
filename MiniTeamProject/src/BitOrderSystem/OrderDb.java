@@ -46,6 +46,10 @@ public class OrderDb {
 	}  
   }
   
+  
+  //매개변수로 ID와 PW를 입력받아 SQL문을 작성후
+  // ID와 PW가 일치하는 항목의 MMSQ, ID, NICKNAME, AUTHORITY 값을 받
+  // LoginSession 클래스의 스타틱 변수에넣어준다.
   public void loginsql(String id, String pw) {
 	  String sql = "SELECT * FROM MEMBERMANAGER WHERE ID=? AND PW=?";
 	  try {
