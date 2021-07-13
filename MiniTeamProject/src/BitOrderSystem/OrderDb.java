@@ -11,10 +11,10 @@ public class OrderDb {
   PreparedStatement pstmt = null;
   ResultSet rs = null;
 
-  final String user = "include_hoany";
-  final String pw = "1234";
+  final String user = "아이디";
+  final String pw = "비밀번호";
   final String driver = "oracle.jdbc.driver.OracleDriver";
-  final String url = "jdbc:oracle:thin:@3.35.51.147:6006:XE";
+  final String url = "jdbc:oracle:thin:@아이피:포트:XE";
 
   OrderDb() {
     try {
