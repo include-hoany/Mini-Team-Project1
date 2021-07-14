@@ -5,12 +5,14 @@ import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.ArrayList;
 
 public class OrderDb {
   Connection conn = null;
   PreparedStatement pstmt = null;
   ResultSet rs = null;
+  Statement st=null;
 
   final String user = "include_hoany";
   final String pw = "1234";
@@ -253,7 +255,7 @@ public class OrderDb {
 
   public String[] showMenuNames() { // 가게 주인의 메뉴를 반환하는 메서드
     String sql="select foodname from storemenu where mmsq=?";
-    ArrayList<String> menuNames=new ArrayList<String>();
+    ArrayList menuNames=new ArrayList();
 
     try {
       pstmt=conn.prepareStatement(sql);
@@ -265,11 +267,15 @@ public class OrderDb {
     } catch (SQLException e) {
       System.out.println("오류 발생~!");
     }
+    Object[] tmp=menuNames.toArray();
+    String[] menuList=new String[tmp.length];
 
-    //    Object[] tmp=menuNames.toArray();
-    //    String[] menuList=(String[])tmp;
+    for (int i=0;i<tmp.length;i++) {
+      if (tmp[i] instanceof String)
+        menuList[i]=(String)tmp[i];
+    }
 
-    return (String[])menuNames.toArray();
+    return menuList;
   }
 
   public void showMenu() { // 가게 주인이 자기의 메뉴만을 조회하는 메서드
@@ -315,20 +321,22 @@ public class OrderDb {
   }
 
   public void alterMenu(String prevFoodName, String foodName, int foodPrice) { // 음식이름과 가격을 수정하는 메서드
+    String sql="update storemenu set foodname=?, price=? where mmsq=? and foodname=?";
+
     try {
-      String sql="update storemenu set foodname=?, price=? where mmsq=? and foodname=?";
       pstmt=conn.prepareStatement(sql);
       pstmt.setString(1,foodName);
       pstmt.setInt(2, foodPrice);
       pstmt.setInt(3, LoginSession.mmsq);
       pstmt.setString(4, prevFoodName);
 
-      if (pstmt.executeUpdate(sql) > 0)
+      if (pstmt.executeUpdate() > 0)
         System.out.println("메뉴 수정 완료!!");
       else System.out.println("메뉴 수정 실패!!");
 
     } catch (SQLException e) {
       System.out.println("오류 발생~");
+      e.printStackTrace();
     }
   }
 

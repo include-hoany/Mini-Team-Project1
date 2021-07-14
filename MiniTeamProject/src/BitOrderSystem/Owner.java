@@ -5,8 +5,7 @@ import java.util.Scanner;
 public class Owner {
   OrderDb db = null;
   Scanner sc = null;
-  String[] menuNames=db.showMenuNames();
-
+  String[] menuNames;
   String[] orderStatus= { "접수중","접수 완료","접수 취소" };
 
   //Owner 생성자에서 BitOrderSystem 클래스의 db, sc 를 가지고 온다.
@@ -70,10 +69,13 @@ public class Owner {
 
     } catch (Exception e) {
       System.out.println("형식에 맞지 않네요~");
+      e.printStackTrace();
     } 
   }
 
   public void modifyMenu() {
+    menuNames=db.showMenuNames();
+
     if (menuNames.length==0)
       System.out.println("등록한 음식이 없네요~");
 
@@ -85,7 +87,7 @@ public class Owner {
 
     try {
       int foodNum=Integer.parseInt(sc.nextLine());
-      String prevFoodName=menuNames[foodNum-1];
+      String prevFoodName=menuNames[foodNum-1].trim();
 
       System.out.print("이름을 어떻게 바꾸시겠습니까?>>");
       String foodName=sc.nextLine();
@@ -95,7 +97,7 @@ public class Owner {
 
       db.alterMenu(prevFoodName,foodName, foodPrice);
     } catch (Exception e) {
-      System.out.println("오류 발생~");
+      e.printStackTrace();
     }
   }
 
