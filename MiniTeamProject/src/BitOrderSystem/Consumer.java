@@ -97,7 +97,6 @@ public class Consumer {
     System.out.print("리뷰 내용을 작성하세요 ");
     String comment = sc.nextLine();
 
-    // 디비등록
     db.enrollReviewdb(storeNumber, comment);
   }
 
