@@ -5,7 +5,7 @@ import java.util.Scanner;
 public class Owner {
   OrderDb db = null;
   Scanner sc = null;
-  String[] menuNames=db.showMenuNames();
+  String[] menuNames;
 
   String[] orderStatus= { "접수중","접수 완료","접수 취소" };
 
@@ -74,6 +74,7 @@ public class Owner {
   }
 
   public void modifyMenu() {
+    this.menuNames = db.showMenuNames();
     if (menuNames.length==0)
       System.out.println("등록한 음식이 없네요~");
 

@@ -269,7 +269,8 @@ public class OrderDb {
     //    Object[] tmp=menuNames.toArray();
     //    String[] menuList=(String[])tmp;
 
-    return (String[])menuNames.toArray();
+
+    return menuNames.toArray(new String[menuNames.size()]);
   }
 
   public void showMenu() { // 가게 주인이 자기의 메뉴만을 조회하는 메서드
