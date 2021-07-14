@@ -1,9 +1,6 @@
 package BitOrderSystem;
 
 import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
 import java.util.Scanner;
 
 public class Consumer {
@@ -19,33 +16,36 @@ public class Consumer {
   // 소비자 메뉴를 보여주는 메소드
   public void process() {
     System.out.println("[소비자 메뉴]");
-    System.out.print("[ 1. 주문  2. 주문상태확인 3. 리뷰등록 4. 리뷰보기 9. 로그아웃 ]");
-    int index = Integer.parseInt(sc.nextLine());
-    switch(index) {
-      case 1:
-        //주문 메소드 작동
-        Order();
-        break;
-      case 2:
-        //주문상태확인 메소드 작동
-        checkOrderStatus();
-        break;
-      case 3:
-        //리뷰등록 메소드 작성
-        enrollReview();
-        break;
-      case 4:
-        //리뷰 보기
-        viewReview();
-        break;
-      case 9:
-        // 로그아웃
-        LoginSession.logout();
-        break;
-      default:
-        System.out.println("잘못 입력하셨습니다.");
-        break;
-    }
+    loop:
+      while(true) {
+        System.out.print("[ 1. 주문  2. 주문상태확인 3. 리뷰등록 4. 리뷰보기 9. 로그아웃 ]");
+        int index = Integer.parseInt(sc.nextLine());
+        switch(index) {
+          case 1:
+            //주문 메소드 작동
+            Order();
+            break;
+          case 2:
+            //주문상태확인 메소드 작동
+            checkOrderStatus();
+            break;
+          case 3:
+            //리뷰등록 메소드 작성
+            enrollReview();
+            break;
+          case 4:
+            //리뷰 보기
+            viewReview();
+            break;
+          case 9:
+            // 로그아웃
+            LoginSession.logout();
+            break loop;
+          default:
+            System.out.println("잘못 입력하셨습니다.");
+            break;
+        }
+      }
   }
 
   public void Order() {
@@ -101,7 +101,13 @@ public class Consumer {
     db.enrollReviewdb(storeNumber, comment);
   }
 
+  public void viewReview() {
+    db.searchStoreList();
+    System.out.print("리뷰를 확인할 가게번호를 입력해주세요. ");
+    int storeNumber = Integer.parseInt(sc.nextLine());
+    db.showReview(storeNumber);
 
+  }
 
 
   public static void checkOrderStatus() {
@@ -111,22 +117,5 @@ public class Consumer {
 
 
 
-  public static void viewReview() {
-    String sql = "SELECT * FROM REVIEW WHERE MMSQ LIKE=?";
-    Connection conn = null;
-    PreparedStatement pstmt = null;
-    ResultSet rs = null;
-    try {
-      pstmt = conn.prepareStatement(sql);
-      pstmt.setString(1, sql);
-      rs = pstmt.executeQuery();
-      while(rs.next()) {
-        // 모르겠음.... mmsq = rs.mmsq("sql");       
-      }
-    } catch (SQLException e) {
-      // TODO Auto-generated catch block
-      e.printStackTrace();
-    }
-  }
 
 }
