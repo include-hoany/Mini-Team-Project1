@@ -44,7 +44,7 @@ public class Owner {
 
   public void enrollMenu() {
     try {
-      String[] menuNames = db.showMenuNames();
+      String[] menuNames = db.showMenuNames(LoginSession.mmsq);
       db.showMenu(); // 가게 주인이 자기만의 메뉴를 조회하는 메서드
       System.out.println();
       System.out.print("음식 이름은 무엇입니까 ?>>>");
@@ -76,7 +76,7 @@ public class Owner {
   }
 
   public void modifyMenu() {
-    String[] menuNames = db.showMenuNames();
+    String[] menuNames = db.showMenuNames(LoginSession.mmsq);
     if (menuNames.length==0)
       System.out.println("등록한 음식이 없네요~");
 
