@@ -6,7 +6,7 @@ public class Owner {
   OrderDb db = null;
   Scanner sc = null;
 
-  String[] orderStatus= {"접수중","접수 완료","접수 취소"};
+  String[] orderStatus= { "접수중","접수 완료","접수 취소" };
 
   //Owner 생성자에서 BitOrderSystem 클래스의 db, sc 를 가지고 온다.
   Owner() {
