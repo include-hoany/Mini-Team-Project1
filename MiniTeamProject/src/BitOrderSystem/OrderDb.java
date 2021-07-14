@@ -253,13 +253,13 @@ public class OrderDb {
 
   } // end Method updateStoreTable
 
-  public String[] showMenuNames() { // 가게 주인의 메뉴를 반환하는 메서드
+  public String[] showMenuNames(int mmsq) { // 가게 주인의 메뉴를 반환하는 메서드
     String sql="select foodname from storemenu where mmsq=?";
     ArrayList<String> menuNames=new ArrayList<String>();
 
     try {
       pstmt=conn.prepareStatement(sql);
-      pstmt.setInt(1, LoginSession.mmsq);
+      pstmt.setInt(1, mmsq);
       rs=pstmt.executeQuery();
 
       while (rs.next()) 
@@ -427,6 +427,73 @@ public class OrderDb {
       e.printStackTrace();
     }
 
+  }
+
+  public void showMyOrder() {
+    String sql = "SELECT * FROM ORDERMANAGER WHERE CONSUMERID=? ORDER BY ORDERDATE DESC";
+    try {
+      pstmt= conn.prepareStatement(sql);
+      pstmt.setString(1, LoginSession.id);
+      rs = pstmt.executeQuery();
+      while(rs.next()) {
+        System.out.printf("%d %s %s%n%n", rs.getInt("ODSQ"), rs.getString("STATUS"), rs.getDate("ORDERDATE"));
+      }
+    } catch (SQLException e) {
+      // TODO Auto-generated catch block
+      e.printStackTrace();
+    }
+  }
+
+  public void showMenuList(int mmsq) {
+    String sql = "SELECT * FROM STOREMENU WHERE MMSQ=?";
+    try {
+      pstmt= conn.prepareStatement(sql);
+      pstmt.setInt(1, mmsq);
+      rs = pstmt.executeQuery();
+      int i = 1;
+      while(rs.next()) {
+        System.out.printf("%d %s %d%n%n", i++, rs.getString("FOODNAME"), rs.getInt("PRICE"));
+      }
+    } catch (SQLException e) {
+      e.printStackTrace();
+    }
+  }
+
+  public void getReceiptNumber(int storeNumber) {
+    String sql = "INSERT INTO ORDERMANAGER(ODSQ, MMSQ, CONSUMERID, STATUS, ORDERDATE) "
+        + "VALUES(ODSQ.nextval, ?, ?, ?, SYSDATE)";
+    try {
+      pstmt = conn.prepareStatement(sql);
+      pstmt.setInt(1, storeNumber);
+      pstmt.setString(2, LoginSession.id);
+      pstmt.setString(3, "접수중");
+      if(pstmt.executeUpdate() > 0) {
+        System.out.println("접수번호가 발급 되었습니다.");
+      } else {
+        System.out.println("접수번호 발급 실패...");
+      }
+
+    } catch (SQLException e) {
+      // TODO Auto-generated catch block
+      e.printStackTrace();
+    }
+  }
+
+  public void insertOrderDetail(int odsq, int mmsq, String foodName) {
+    String sql = "INSERT INTO ORDERDETAIL(ODSQ, MMSQ, FOODNAME) VALUES(?, ?, ?)";
+    try {
+      pstmt = conn.prepareStatement(sql);
+      pstmt.setInt(1, odsq);
+      pstmt.setInt(2, mmsq);
+      pstmt.setString(3, foodName);
+      if(pstmt.executeUpdate() > 0) {
+        System.out.println("메뉴가 추가되었습니다.");
+      } else {
+        System.out.println("메뉴 추가에 실패하였습니다.");
+      }
+    } catch(SQLException e) {
+      e.printStackTrace();
+    }
   }
 
   // 프로그램 종료시 데이터베이스와의 연결을 해제하는 메소드

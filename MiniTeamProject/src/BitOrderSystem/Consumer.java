@@ -1,6 +1,5 @@
 package BitOrderSystem;
 
-import java.sql.Connection;
 import java.util.Scanner;
 
 public class Consumer {
@@ -49,36 +48,20 @@ public class Consumer {
   }
 
   public void Order() {
-    String[] category = {"한식", "일식", "중식", "패스트푸드"};
-    System.out.println("[음식 종류]\n1. 한식  \n2. 일식 \n3. 중식 \n4. 패스트푸드 ");
-    int index = Integer.parseInt(sc.nextLine());
-    switch(category[index-1]) {
-      case "한식":
-        // 한식 판매점 목록1
-        break;
-      case "일식":
-        // 일식 판매점 목록
-        break;
-      case "중식":
-        //중식 판매점 목록
-        break;
-      case "패스트푸드":
-        //패스트푸드 목록
-        break;
-      default:
-        System.out.println("잘못 입력하셨습니다.");
-        break;
-    }
-
+    db.searchStoreList();
     System.out.print("주문할 가게번호를 입력해주세요. ");
     int storeNumber = Integer.parseInt(sc.nextLine());
-    //String[] menu = db.menuarray();
-    // 가게번호를 기준으로 헤당 가게에 메뉴리스트를 가지고 온다.
-
+    String[] menuNames = db.showMenuNames(storeNumber);
+    db.getReceiptNumber(storeNumber);
+    int odsq = db.getLastODSQ();
     while(true) {
-      System.out.print("주문할 메뉴 번호를 입력하세요. ");
+      for (int i=0;i<menuNames.length;i++) {
+        System.out.print((i+1)+"."+menuNames[i]+"\t");
+      }
+      System.out.print("\n주문할 메뉴 번호를 입력하세요. ");
       int menuNumber = Integer.parseInt(sc.nextLine());
       // 데이터 연산처리 예정
+      db.insertOrderDetail(odsq, storeNumber, menuNames[menuNumber-1]);
       System.out.print("더 주문하시겠습니까? (y/n) ");
       String choice = sc.nextLine();
       if(choice.equals("n")) {
@@ -110,9 +93,8 @@ public class Consumer {
   }
 
 
-  public static void checkOrderStatus() {
-    Connection conn = null;
-    String sql = "SELECT * FROM  ";
+  public void checkOrderStatus() {
+    db.showMyOrder();
   }
 
 
