@@ -75,6 +75,8 @@ public class Admin {
     try {Thread.sleep(2000);} catch (InterruptedException ic) {}
     db.insertStoreTable(tempMMSQ, storename, address, category);
 
+    System.out.println("방금 입력된 가게번호: " + db.getLastMMSQ());
+
   }
 
   // 가게의 속성 정보를 갱식하는 메소드
@@ -97,7 +99,7 @@ public class Admin {
       db.updateStoreTable(mmsq, storename, address, category);
 
     } catch(NumberFormatException nfe) {
-      System.out.println("숫자만 입력해 주세요.. ");
+      System.out.println("숫자만 입력해 주세요... ");
 
     } catch(Exception e) {
       System.out.println("알수없는 에러... ");

@@ -12,10 +12,10 @@ public class OrderDb {
   PreparedStatement pstmt = null;
   ResultSet rs = null;
 
-  final String user = "아이디";
-  final String pw = "비밀번호";
+  final String user = "include_hoany";
+  final String pw = "1234";
   final String driver = "oracle.jdbc.driver.OracleDriver";
-  final String url = "jdbc:oracle:thin:@아이피:포트:XE";
+  final String url = "jdbc:oracle:thin:@3.35.51.147:6006:XE";
 
   OrderDb() {
     try {
@@ -143,7 +143,7 @@ public class OrderDb {
   // 현재 등록되어 있는 가게 리스트를 출력하는 메소드
   public void searchStoreList() {
     String sql = "SELECT * FROM MEMBERMANAGER m, STORE s WHERE m.AUTHORITY =" 
-        + "'" + "STORE" + "'" + "and m.MMSQ = s.MMSQ";
+        + "'" + "STORE" + "'" + "and m.MMSQ = s.MMSQ ORDER BY m.MMSQ";
     try {
       pstmt = conn.prepareStatement(sql);
       rs= pstmt.executeQuery();
@@ -186,6 +186,52 @@ public class OrderDb {
     } // end try / catch
 
   } // end Method updateStoreMemberTable
+
+  //가장 최근에 입력된 회원번호를 찾아오는 메소드.
+  public int getLastMMSQ() {
+    String sql = "SELECT MMSQ.currval FROM dual";
+    int temp = 0;
+    try {
+      pstmt = conn.prepareStatement(sql);
+      rs = pstmt.executeQuery();
+
+      while(rs.next()) {
+        temp = rs.getInt("CURRVAL");
+
+      }
+
+      return temp;
+
+    } catch (SQLException sqle) {
+      sqle.printStackTrace();
+
+    } // end try / catch
+
+    return temp;
+  }
+
+  //가장 최근에 주문된 주문번호를 찾는 메소드.
+  public int getLastODSQ() {
+    String sql = "SELECT ODSQ.currval FROM dual";
+    int temp = 0;
+    try {
+      pstmt = conn.prepareStatement(sql);
+      rs = pstmt.executeQuery();
+
+      while(rs.next()) {
+        temp = rs.getInt("CURRVAL");
+
+      }
+
+      return temp;
+
+    } catch (SQLException sqle) {
+      sqle.printStackTrace();
+
+    } // end try / catch
+
+    return temp;
+  }
 
   // 가게 속성중 STORE테이블의 값을 갱신하는 메소드
   public void updateStoreTable(int mmsq, String storename, String address, String category) {
@@ -344,6 +390,25 @@ public class OrderDb {
     } catch (SQLException e) {
       System.out.println("오류 발생!");
     }
+  }
+
+  public void enrollReviewdb(int mmsq, String reviewComment) {
+    String sql = "INSERT INTO REVIEW(MMSQ, NICKNAME, REVIEWCOMMENT, CREATEDDATE) VALUES(?, ?, ?, sysdate)";
+    try {
+      pstmt = conn.prepareStatement(sql);
+      pstmt.setInt(1, mmsq);
+      pstmt.setString(2, LoginSession.nickname);
+      pstmt.setString(3, reviewComment);
+      if(pstmt.executeUpdate() > 0) {
+        System.out.println("리뷰 등록 완료!");
+      } else {
+        System.out.println("리뷰 등록에 실패하였습니다.");
+      }
+    } catch (SQLException e) {
+      // TODO Auto-generated catch block
+      e.printStackTrace();
+    }  
+
   }
 
   // 프로그램 종료시 데이터베이스와의 연결을 해제하는 메소드
