@@ -255,7 +255,7 @@ public class OrderDb {
 
   public String[] showMenuNames() { // 가게 주인의 메뉴를 반환하는 메서드
     String sql="select foodname from storemenu where mmsq=?";
-    ArrayList menuNames=new ArrayList();
+    ArrayList<String> menuNames=new ArrayList<String>();
 
     try {
       pstmt=conn.prepareStatement(sql);
@@ -267,15 +267,8 @@ public class OrderDb {
     } catch (SQLException e) {
       System.out.println("오류 발생~!");
     }
-    Object[] tmp=menuNames.toArray();
-    String[] menuList=new String[tmp.length];
 
-    for (int i=0;i<tmp.length;i++) {
-      if (tmp[i] instanceof String)
-        menuList[i]=(String)tmp[i];
-    }
-
-    return menuList;
+    return menuNames.toArray(new String[menuNames.size()]);
   }
 
   public void showMenu() { // 가게 주인이 자기의 메뉴만을 조회하는 메서드

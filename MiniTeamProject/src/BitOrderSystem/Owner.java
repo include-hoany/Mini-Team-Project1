@@ -6,7 +6,7 @@ public class Owner {
   OrderDb db = null;
   Scanner sc = null;
   String[] menuNames;
-  String[] orderStatus= { "접수중","접수 완료","접수 취소" };
+  final String[] orderStatus= { "접수중","접수 완료","접수 취소" };
 
   //Owner 생성자에서 BitOrderSystem 클래스의 db, sc 를 가지고 온다.
   Owner() {
@@ -20,7 +20,7 @@ public class Owner {
     while(true) {
       try {
         System.out.println("[가게 메뉴]");
-        System.out.print("[ 1. 메뉴등록  2. 메뉴가격수정 3. 주문처리 4. 공지 9. 로그아웃 ]");
+        System.out.print("[ 1. 메뉴 등록  2. 메뉴 수정 3. 주문처리 4. 공지 9. 로그아웃 ]");
         int menuNum=Integer.parseInt(sc.nextLine());
 
         switch (menuNum) {
@@ -44,15 +44,17 @@ public class Owner {
 
   public void enrollMenu() {
     try {
+      String[] menuNames = db.showMenuNames();
       db.showMenu(); // 가게 주인이 자기만의 메뉴를 조회하는 메서드
       System.out.println();
       System.out.print("음식 이름은 무엇입니까 ?>>>");
       String foodName=sc.nextLine();
 
       for (String s:menuNames) {
-        if (s.equals(foodName)) 
+        if (s.equals(foodName)) {
           System.out.println("이미 등록한 메뉴입니다.");
-        return;
+          return;
+        }
       }
 
       System.out.print("가격은 얼마죠?>>>");
@@ -69,13 +71,12 @@ public class Owner {
 
     } catch (Exception e) {
       System.out.println("형식에 맞지 않네요~");
-      e.printStackTrace();
+      System.out.println(e.getMessage());
     } 
   }
 
   public void modifyMenu() {
-    menuNames=db.showMenuNames();
-
+    String[] menuNames = db.showMenuNames();
     if (menuNames.length==0)
       System.out.println("등록한 음식이 없네요~");
 
@@ -83,7 +84,7 @@ public class Owner {
       System.out.print((i+1)+"."+menuNames[i]+"\t");
 
     System.out.println();
-    System.out.print("바꾸고자 하는 음식을 골라주세요.>>");
+    System.out.print("바꾸고자 하는 음식을 골라주세요.(숫자)>>");
 
     try {
       int foodNum=Integer.parseInt(sc.nextLine());
