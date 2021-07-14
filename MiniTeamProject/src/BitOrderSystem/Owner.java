@@ -5,8 +5,8 @@ import java.util.Scanner;
 public class Owner {
   OrderDb db = null;
   Scanner sc = null;
-  String[] orderStatus= {"접수중","접수 완료","접수 취소"};
 
+  String[] orderStatus= {"접수중","접수 완료","접수 취소"};
 
   //Owner 생성자에서 BitOrderSystem 클래스의 db, sc 를 가지고 온다.
   Owner() {
@@ -16,10 +16,11 @@ public class Owner {
 
   // 가게 메뉴를 보여주는 메소드
   public void process() {
+
     while(true) {
       try {
         System.out.println("[가게 메뉴]");
-        System.out.print("[ 1. 메뉴등록  2. 메뉴가격수정 3. 주문접수 4. 공지 5. 종료 ]");
+        System.out.print("[ 1. 메뉴등록  2. 메뉴가격수정 3. 주문접수 4. 공지 9. 로그아웃 ]");
         int menuNum=Integer.parseInt(sc.nextLine());
 
         switch (menuNum) {
@@ -27,7 +28,10 @@ public class Owner {
           case 2: modifyMenu(); break;
           case 3: acceptOrder(); break;
           case 4: notice(); break;
-          case 5: return;
+          case 9: 
+            System.out.println("가게 로그아웃\n");
+            LoginSession.logout(); 
+            return;
           default :
             System.out.println("잘못 입력하였습니다.");
             break;
