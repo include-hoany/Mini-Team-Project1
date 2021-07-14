@@ -5,6 +5,7 @@ import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 
 public class OrderDb {
   Connection conn = null;
@@ -203,6 +204,147 @@ public class OrderDb {
     } // end try / catch
 
   } // end Method updateStoreTable
+
+  public String[] showMenuNames() { // 가게 주인의 메뉴를 반환하는 메서드
+    String sql="select foodname from storemenu where mmsq=?";
+    ArrayList<String> menuNames=new ArrayList<String>();
+
+    try {
+      pstmt=conn.prepareStatement(sql);
+      pstmt.setInt(1, LoginSession.mmsq);
+      rs=pstmt.executeQuery();
+
+      while (rs.next()) 
+        menuNames.add(rs.getString("foodname"));
+    } catch (SQLException e) {
+      System.out.println("오류 발생~!");
+    }
+
+    //    Object[] tmp=menuNames.toArray();
+    //    String[] menuList=(String[])tmp;
+
+    return (String[])menuNames.toArray();
+  }
+
+  public void showMenu() { // 가게 주인이 자기의 메뉴만을 조회하는 메서드
+    int mmsq=LoginSession.mmsq;
+    String sql="select * from storemenu where mmsq=?";
+
+    try {
+      pstmt=conn.prepareStatement(sql);
+      pstmt.setInt(1, mmsq);
+      rs=pstmt.executeQuery();
+
+      System.out.println("                  [메뉴목록]                   ");
+      System.out.println("----------------------------------------------------");
+      System.out.printf("%s\t %s\t %s\n","가게번호","음식 이름","가격");
+      System.out.println("----------------------------------------------------");
+
+      while (rs.next()) {
+        String foodName=rs.getString("foodname");
+        int foodPrice=rs.getInt("price");
+        System.out.printf("%d\t %s\t %d\n",mmsq,foodName,foodPrice);
+      }
+      System.out.println("----------------------------------------------------");
+    } catch (SQLException e) {
+      System.out.println("오류 발생~");
+    }
+  }
+
+  public void registerMenu(String foodName, int foodPrice) { // 가게 메뉴를 등록하는 메서드
+    String sql="insert into storemenu (mmsq,foodname,price) values(?,?,?)";
+
+    try {
+      pstmt=conn.prepareStatement(sql);
+      pstmt.setInt(1, LoginSession.mmsq);
+      pstmt.setString(2, foodName);
+      pstmt.setInt(3, foodPrice);
+
+      if (pstmt.executeUpdate()>0) 
+        System.out.println("가게 메뉴 등록 완료!");
+      else System.out.println("가게 메뉴 등록 실패!");    
+    } catch (SQLException e) {
+      System.out.println("오류 발생~");
+    }
+  }
+
+  public void alterMenu(String prevFoodName, String foodName, int foodPrice) { // 음식이름과 가격을 수정하는 메서드
+    try {
+      String sql="update storemenu set foodname=?, price=? where mmsq=? and foodname=?";
+      pstmt=conn.prepareStatement(sql);
+      pstmt.setString(1,foodName);
+      pstmt.setInt(2, foodPrice);
+      pstmt.setInt(3, LoginSession.mmsq);
+      pstmt.setString(4, prevFoodName);
+
+      if (pstmt.executeUpdate(sql) > 0)
+        System.out.println("메뉴 수정 완료!!");
+      else System.out.println("메뉴 수정 실패!!");
+
+    } catch (SQLException e) {
+      System.out.println("오류 발생~");
+    }
+  }
+
+  public void showOrderManager() { // 가게 소유자의 주문 내역을 조회하는 메서드
+    int mmsq=LoginSession.mmsq;
+    String sql="select * from ordermanager where mmsq=?";
+
+    try {
+      pstmt=conn.prepareStatement(sql);
+      pstmt.setInt(1, mmsq);
+      rs=pstmt.executeQuery();
+
+      System.out.println("                    [주문 목록]                   ");
+      System.out.println("---------------------------------------------------------------------------------");
+      System.out.printf("%s\t %s\t %s\t %s\t %s\n","주문번호","가게 번호","주문자", "주문상태", "주문날짜");
+      System.out.println("---------------------------------------------------------------------------------");
+
+      while (rs.next()) {
+        int orderNum=rs.getInt("odsq");
+        String conId=rs.getString("consumerid");
+        String orderStatus=rs.getString("status");
+        String orderDate=rs.getString("orderdate");
+        System.out.printf("%d\t %d\t %s\t %s\n",orderNum,mmsq,conId,orderStatus,orderDate);
+      }
+      System.out.println("---------------------------------------------------------------------------------");
+    } catch (SQLException e) {
+      System.out.println("오류 발생~");
+    }
+  }
+
+  public void handleOrder(int orderNum,String orderMsg) { // 주문 상태를 처리하는 메서드
+    try {
+      String sql="update ordermanager set status=? where odsq=?";
+      pstmt=conn.prepareStatement(sql);
+      pstmt.setString(1, orderMsg);
+      pstmt.setInt(2, orderNum);
+
+      if (pstmt.executeUpdate() >0) {
+        System.out.println("주문 처리 완료!");
+      } else {
+        System.out.println("주문 처리 실패");
+      }
+    } catch (SQLException e) {
+      System.out.println("오류 발생~");
+    }
+  }
+
+  public void registerNotice(String notice) { // 공지 등록 메서드
+    String sql="update store set notice=? where mmsq=?";
+
+    try {
+      pstmt=conn.prepareStatement(sql);
+      pstmt.setString(1, notice);
+      pstmt.setInt(2, LoginSession.mmsq);
+
+      if (pstmt.executeUpdate()>0) {
+        System.out.println("공지 등록 완료~!");
+      } else System.out.println("공지 등록 실패~");
+    } catch (SQLException e) {
+      System.out.println("오류 발생!");
+    }
+  }
 
   // 프로그램 종료시 데이터베이스와의 연결을 해제하는 메소드
   public void closeDb() {
