@@ -204,6 +204,24 @@ public class OrderDb {
 
   } // end Method updateStoreTable
 
+  public void enrollReviewdb(int mmsq, String reviewComment) {
+    String sql = "INSERT INTO REVIEW(MMSQ, NICKNAME, REVIEWCOMMENT, CREATEDDATE) VALUES(?, ?, ?, sysdate)";
+    try {
+      pstmt = conn.prepareStatement(sql);
+      pstmt.setInt(1, mmsq);
+      pstmt.setString(2, LoginSession.nickname);
+      pstmt.setString(3, reviewComment);
+      if(pstmt.executeUpdate() > 0) {
+        System.out.println("리뷰 등록 완료!");
+      } else {
+        System.out.println("리뷰 등록에 실패하였습니다.");
+      }
+    } catch (SQLException e) {
+      // TODO Auto-generated catch block
+      e.printStackTrace();
+    }  
+  }
+
   // 프로그램 종료시 데이터베이스와의 연결을 해제하는 메소드
   public void closeDb() {
     try {
