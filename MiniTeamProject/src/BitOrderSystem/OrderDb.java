@@ -268,6 +268,23 @@ public class OrderDb {
     }  
   }
 
+  public void showReview(int mmsq) {
+    String sql = "SELECT * FROM REVIEW WHERE MMSQ=?";
+    try {
+      pstmt = conn.prepareStatement(sql);
+      pstmt.setInt(1, mmsq);
+      rs = pstmt.executeQuery();
+      System.out.println(" ---------------------------------------");
+      while(rs.next()) {
+        System.out.printf("%s %s %s%n%n", rs.getString("NICKNAME"), rs.getString("REVIEWCOMMENT"), rs.getDate("CREATEDDATE"));
+      }
+    } catch (SQLException e) {
+      // TODO Auto-generated catch block
+      e.printStackTrace();
+    }
+
+  }
+
   // 프로그램 종료시 데이터베이스와의 연결을 해제하는 메소드
   public void closeDb() {
     try {
