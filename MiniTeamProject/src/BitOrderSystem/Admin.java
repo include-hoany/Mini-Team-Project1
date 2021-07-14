@@ -29,7 +29,7 @@ public class Admin {
               break;
             case 2:
               //가게수정 메소드 작동
-              this.midifyStroe();
+              this.modifyStore();
               break;
             case 9:
               System.out.println("관리자 로그아웃\n");
@@ -75,18 +75,37 @@ public class Admin {
     try {Thread.sleep(2000);} catch (InterruptedException ic) {}
     db.insertStoreTable(tempMMSQ, storename, address, category);
 
+    System.out.println("방금 입력된 가게번호: " + db.getLastMMSQ());
+
   }
 
-  // public 가게수정 메소드 작동...
-  public void midifyStroe() {
+  // 가게의 속성 정보를 갱식하는 메소드
+  public void modifyStore() {
     // 어떤 가게를 수정할지 확인하기 위해
     /// 어떤 가게들이 있는지 확인하고 수정할 가게번호를 찾아 수정한다.
     db.searchStoreList();
-    System.out.print("수정할 가게번호 >> ");
-    String id = sc.nextLine().trim();
-  }
+    try {
+      System.out.print("수정할 가게번호 >> ");
+      int mmsq = Integer.parseInt(sc.nextLine().trim());
+      System.out.print("수정할 전화번호 >> ");
+      String phone = sc.nextLine().trim();
+      System.out.print("수정할 가게명 >> ");
+      String storename = sc.nextLine().trim();
+      System.out.print("수정할 주소 >> ");
+      String address = sc.nextLine().trim();
+      System.out.print("수정할 카테고리 >> ");
+      String category = sc.nextLine().trim();
+      db.updateStoreMemberTable(mmsq, phone);
+      db.updateStoreTable(mmsq, storename, address, category);
 
+    } catch(NumberFormatException nfe) {
+      System.out.println("숫자만 입력해 주세요... ");
 
+    } catch(Exception e) {
+      System.out.println("알수없는 에러... ");
 
+    }
+
+  } // end Mothod  modifyStore
 
 }
