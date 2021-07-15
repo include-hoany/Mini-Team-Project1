@@ -5,7 +5,6 @@ import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Statement;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 
@@ -13,7 +12,6 @@ public class OrderDb {
   Connection conn = null;
   PreparedStatement pstmt = null;
   ResultSet rs = null;
-  Statement st=null;
 
   final String user = "include_hoany";
   final String pw = "1234";
@@ -289,17 +287,17 @@ public class OrderDb {
       pstmt.setInt(1, mmsq);
       rs=pstmt.executeQuery();
 
-      System.out.println("                  [메뉴목록]                   ");
-      System.out.println("----------------------------------------------------");
-      System.out.printf("%s\t %s\t %s\n","가게번호","음식 이름","가격");
-      System.out.println("----------------------------------------------------");
+      System.out.println("                            [메뉴목록]                            ");
+      System.out.println("----------------------------------------------------------------------");
+      System.out.printf("%-5s\t %-30s\t %-4s\n","가게번호","음식 이름","가격");
+      System.out.println("----------------------------------------------------------------------");
 
       while (rs.next()) {
         String foodName=rs.getString("foodname");
         int foodPrice=rs.getInt("price");
-        System.out.printf("%d\t %s\t %d\n",mmsq,foodName,foodPrice);
+        System.out.printf("%-10d\t %-30s\t %-8d\n",mmsq,foodName,foodPrice);
       }
-      System.out.println("----------------------------------------------------");
+      System.out.println("----------------------------------------------------------------------");
     } catch (SQLException e) {
       System.out.println("오류 발생~");
     }
@@ -343,7 +341,6 @@ public class OrderDb {
 
     } catch (SQLException e) {
       System.out.println("오류 발생~");
-      e.printStackTrace();
     }
 
   } // end Method alterMenu
@@ -358,19 +355,19 @@ public class OrderDb {
       pstmt.setInt(1, mmsq);
       rs=pstmt.executeQuery();
 
-      System.out.println("                    [주문 목록]                   ");
-      System.out.println("---------------------------------------------------------------------------------");
-      System.out.printf("%s\t %s\t %s\t %s\t %s\n","주문번호","가게 번호","주문자", "주문상태", "주문날짜");
-      System.out.println("---------------------------------------------------------------------------------");
+      System.out.println("                                   [주문 목록]                                   ");
+      System.out.println("----------------------------------------------------------------------------------------");
+      System.out.printf("%-5s\t %-5s\t %-10s\t %-5s\t %-10s\n","주문번호","가게번호","주문자", "주문상태", "주문날짜");
+      System.out.println("----------------------------------------------------------------------------------------");
 
       while (rs.next()) {
         int orderNum=rs.getInt("odsq");
         String conId=rs.getString("consumerid");
         String orderStatus=rs.getString("status");
         String orderDate=rs.getString("orderdate");
-        System.out.printf("%d\t %d\t %s\t %s\n",orderNum,mmsq,conId,orderStatus,orderDate);
+        System.out.printf("%-10d\t %-10d\t %-14s\t %-5s\t %-20s\n",orderNum,mmsq,conId,orderStatus,orderDate);
       }
-      System.out.println("---------------------------------------------------------------------------------");
+      System.out.println("----------------------------------------------------------------------------------------");
     } catch (SQLException e) {
       System.out.println("오류 발생~");
     }
@@ -411,8 +408,32 @@ public class OrderDb {
     } catch (SQLException e) {
       System.out.println("오류 발생!");
     }
+  }
 
-  } // end Method registerNotice
+  public Integer[] getOrderNum() {
+    String sql="select odsq from ordermanager where mmsq=?";    
+    ArrayList tmp=new ArrayList();
+    Integer[] arrOrderNum=null;
+
+    try {
+      pstmt=conn.prepareStatement(sql);
+      pstmt.setInt(1, LoginSession.mmsq);
+      rs=pstmt.executeQuery();
+
+      while (rs.next()) {
+        tmp.add(rs.getInt("odsq"));
+      }
+      arrOrderNum=new Integer[tmp.size()];
+
+      for (int i=0;i<tmp.size();i++) 
+        arrOrderNum[i]=(Integer)tmp.get(i);
+
+    } catch (SQLException e) {
+      System.out.println("오류입니다용~!");
+      e.printStackTrace();
+    }
+    return arrOrderNum;
+  }
 
   // 소비자가 리뷰를 등록하는 메소드
   public void enrollReviewdb(int mmsq, String reviewComment) {

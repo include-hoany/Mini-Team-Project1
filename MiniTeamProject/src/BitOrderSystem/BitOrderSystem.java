@@ -56,7 +56,6 @@ public class BitOrderSystem {
     // id, pw 를 입력받아 orderDB 클래스에 속한 loginsql함수를 호출
     db.loginsql(id, pw);
 
-    // LoginSession.authority 변수에 값을 읽어와 SWITCH로 분기한다.
     try {    
       switch(LoginSession.authority) {
         case "ADMIN":
@@ -79,5 +78,17 @@ public class BitOrderSystem {
     } // end try / catch
 
   } // end Method login 
+
+  // LoginSession.authority 변수에 값을 읽어와 SWITCH로 분기한다.
+
+  // 로그아웃 메소드 LoginSession의 스타틱 변수 값을 null, false로 초기화 시킨다.
+  public static void logout() {
+    LoginSession.mmsq = 0;
+    LoginSession.id = null;
+    LoginSession.nickname = null;
+    LoginSession.authority = null;
+    LoginSession.isLogin = false;
+
+  }
 
 } // end Class BitOrderSystem

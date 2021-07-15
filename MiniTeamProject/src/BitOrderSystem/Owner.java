@@ -6,6 +6,7 @@ public class Owner {
   OrderDb db = null;
   Scanner sc = null;
   String[] menuNames;
+  Integer[] orderNumbers;
   final String[] orderStatus= { "접수중","접수 완료","접수 취소" };
 
   //Owner 생성자에서 BitOrderSystem 클래스의 db, sc 를 가지고 온다.
@@ -45,7 +46,7 @@ public class Owner {
 
   public void enrollMenu() {
     try {
-      String[] menuNames = db.showMenuNames(LoginSession.mmsq);
+      menuNames= db.showMenuNames(LoginSession.mmsq);
       db.showMenu(); // 가게 주인이 자기만의 메뉴를 조회하는 메서드
       System.out.println();
       System.out.print("음식 이름은 무엇입니까 ?>>>");
@@ -69,26 +70,24 @@ public class Owner {
 
       db.registerMenu(foodName,foodPrice); // 가게 메뉴를 등록하는 메서드
       System.out.println();
-
     } catch (Exception e) {
       System.out.println("형식에 맞지 않네요~");
       System.out.println(e.getMessage());
-
     } 
   } // end Method enrollMenu
 
   public void modifyMenu() {
-    String[] menuNames = db.showMenuNames(LoginSession.mmsq);
-    if (menuNames.length==0)
-      System.out.println("등록한 음식이 없네요~");
-
-    for (int i=0;i<menuNames.length;i++) 
-      System.out.print((i+1)+"."+menuNames[i]+"\t");
-
-    System.out.println();
-    System.out.print("바꾸고자 하는 음식을 골라주세요.(숫자)>>");
-
     try {
+      menuNames= db.showMenuNames(LoginSession.mmsq);
+      if (menuNames.length==0)
+        System.out.println("등록한 음식이 없네요~");
+
+      for (int i=0;i<menuNames.length;i++) 
+        System.out.print((i+1)+"."+menuNames[i]+"\t");
+
+      System.out.println();
+      System.out.print("바꾸고자 하는 음식을 골라주세요.(숫자)>>");
+
       int foodNum=Integer.parseInt(sc.nextLine());
       String prevFoodName=menuNames[foodNum-1].trim();
 
@@ -99,17 +98,34 @@ public class Owner {
       int foodPrice=Integer.parseInt(sc.nextLine());
 
       db.alterMenu(prevFoodName,foodName, foodPrice);
+    } catch (ArrayIndexOutOfBoundsException ae) {
+      System.out.println("번호를 제대로 입력해주세요.");
     } catch (Exception e) {
+      System.out.println("형식에 맞지 않네요~");
       e.printStackTrace();
 
     }
   } // end Method modifyMenu
 
   public void processOrder() { // 주문 내역의 주문상태를 처리하는 메서드~
+    int count=0;
+    orderNumbers=db.getOrderNum();
+
     try {
       db.showOrderManager(); // 가게 소유자 자신의 주문 내역을 조회
       System.out.print("주문번호를 입력하세요.>>>");
       int orderNum=Integer.parseInt(sc.nextLine());
+
+      //      for (Integer i:orderNumbers) {
+      //        if (orderNum==i) 
+      //          count++;
+      //      }
+
+      //      if (count==0) {
+      //        System.out.println("존재하지 않는 주문번호입니다~");
+      //        return;
+      //      }
+
       System.out.println();
 
       for (int i=0;i<orderStatus.length;i++) 
@@ -122,8 +138,8 @@ public class Owner {
 
       db.handleOrder(orderNum,orderMsg); // 주문 내역의 주문상태를 처리하는 메서드~
     } catch (Exception e) {
-      return;
-
+      System.out.println("형식에 맞지 않아아아아아~");
+      e.printStackTrace();
     }
   } // end Method processOrder
 
