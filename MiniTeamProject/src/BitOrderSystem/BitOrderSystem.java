@@ -45,7 +45,7 @@ public class BitOrderSystem {
 
     } // end while
 
-    -  } // end main
+  } // end main
 
   // ID와 PW를 입력받아 데이터베이스에 확인하고 ID와 PW가 맞다면 로그인 하는 메소드
   public static void login() {
