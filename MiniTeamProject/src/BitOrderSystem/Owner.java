@@ -116,15 +116,15 @@ public class Owner {
       System.out.print("주문번호를 입력하세요.>>>");
       int orderNum=Integer.parseInt(sc.nextLine());
 
-      //      for (Integer i:orderNumbers) {
-      //        if (orderNum==i) 
-      //          count++;
-      //      }
+      for (Integer i:orderNumbers) {
+        if (orderNum==i) 
+          count++;
+      }
 
-      //      if (count==0) {
-      //        System.out.println("존재하지 않는 주문번호입니다~");
-      //        return;
-      //      }
+      if (count==0) {
+        System.out.println("존재하지 않는 주문번호입니다~");
+        return;
+      }
 
       System.out.println();
 
