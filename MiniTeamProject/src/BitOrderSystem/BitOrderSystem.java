@@ -23,8 +23,7 @@ public class BitOrderSystem {
             login();
             break;
           case 2:
-            break;
-          case 3:
+            consumer.enrollConsumer();
             break;
           case 9:
             System.out.print("\n방문포장 시스템 종료");

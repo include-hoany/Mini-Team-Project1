@@ -6,6 +6,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 
 public class OrderDb {
@@ -18,6 +19,7 @@ public class OrderDb {
   final String pw = "1234";
   final String driver = "oracle.jdbc.driver.OracleDriver";
   final String url = "jdbc:oracle:thin:@3.35.51.147:6006:XE";
+  final SimpleDateFormat orderdate = new SimpleDateFormat("yyyy년 MM월 dd일 HH시 mm분 ss초");
 
   OrderDb() {
     try {
@@ -39,7 +41,7 @@ public class OrderDb {
   } // end constructor OrderDb
 
   // 가게 아이디 데이터베이스 등록 메소드
-  public void insertStoreMember(String id, String pw, String nickname, String pn) {
+  public void insertMember(String id, String pw, String nickname, String pn, String authority) {
     String sql = "INSERT INTO MEMBERMANAGER(MMSQ, ID, PW, NICKNAME, PHONE, AUTHORITY) "
         + "VALUES(MMSQ.nextval, ?, ?, ?, ?, ?)";
     try {
@@ -48,7 +50,7 @@ public class OrderDb {
       pstmt.setString(2, pw);
       pstmt.setString(3, nickname);
       pstmt.setString(4, pn);
-      pstmt.setString(5, "STORE");
+      pstmt.setString(5, authority);
 
       if(pstmt.executeUpdate() > 0) {
         System.out.println("가게아이디 등록에 성공하였습니다.");
@@ -58,7 +60,7 @@ public class OrderDb {
       } // end if else
 
     } catch (SQLException e) {
-      e.printStackTrace();
+      System.out.println("이미 가입되어있는 아이디 입니다.");
 
     } // end try / catch
 
@@ -143,7 +145,8 @@ public class OrderDb {
   } // end Method loginsql
 
   // 현재 등록되어 있는 가게 리스트를 출력하는 메소드
-  public void searchStoreList() {
+  public ArrayList<Integer> searchStoreList() {
+    ArrayList<Integer> indexarr = new ArrayList<Integer>();
     String sql = "SELECT * FROM MEMBERMANAGER m, STORE s WHERE m.AUTHORITY =" 
         + "'" + "STORE" + "'" + "and m.MMSQ = s.MMSQ ORDER BY m.MMSQ";
     try {
@@ -155,6 +158,7 @@ public class OrderDb {
       System.out.printf("| %-5s\t| %-5s\t| %-20s\t| %-40s\t| %-5s\t|%n","가게번호", "전화번호", "가게명", "주소", "카테고리");
       System.out.println(" -------------------------------------------------------------------------------------------------------------------------------");
       while(rs.next()) {
+        indexarr.add(rs.getInt("MMSQ"));
         System.out.printf("| %-10d\t| %-10s\t| %-20s\t| %-30s\t| %-10s\t|%n",
             rs.getInt("MMSQ"),
             rs.getString("PHONE"),
@@ -166,11 +170,12 @@ public class OrderDb {
 
       System.out.println(" -------------------------------------------------------------------------------------------------------------------------------");
 
+      return indexarr;
     } catch (SQLException e) {
       e.printStackTrace();
 
     } // end try / catch
-
+    return indexarr;
   } // end Method searchStoreList
 
   // 가게의 속성을 데이터베이스에 갱신하는 메소드
@@ -312,9 +317,11 @@ public class OrderDb {
 
       if (pstmt.executeUpdate()>0) 
         System.out.println("가게 메뉴 등록 완료!");
-      else System.out.println("가게 메뉴 등록 실패!");    
+      else System.out.println("가게 메뉴 등록 실패!");  
+
     } catch (SQLException e) {
       System.out.println("오류 발생~");
+
     }
 
   } // end Method registerMenu
@@ -434,10 +441,14 @@ public class OrderDb {
       pstmt = conn.prepareStatement(sql);
       pstmt.setInt(1, mmsq);
       rs = pstmt.executeQuery();
-      System.out.println(" ---------------------------------------");
+      System.out.println("[리뷰]");
+      System.out.println(" ---------------------------------------------------------------------------------------");
+      System.out.printf("| %-10s\t| %-45s\t| %-9s|%n", "닉네임", "리뷰내용", "리뷰작성일");
+      System.out.println(" ---------------------------------------------------------------------------------------");
       while(rs.next()) {
-        System.out.printf("%s %s %s%n%n", rs.getString("NICKNAME"), rs.getString("REVIEWCOMMENT"), rs.getDate("CREATEDDATE"));
+        System.out.printf("| %-10s\t| %-40s\t| %-11s\t|%n", rs.getString("NICKNAME"), rs.getString("REVIEWCOMMENT"), rs.getDate("CREATEDDATE"));
       }
+      System.out.println(" ---------------------------------------------------------------------------------------");
     } catch (SQLException e) {
       // TODO Auto-generated catch block
       e.printStackTrace();
@@ -447,17 +458,23 @@ public class OrderDb {
 
   // 소비자가 나의 주문 목록을 확인하는 메소드
   public void showMyOrder() {
-    String sql = "SELECT * FROM ORDERMANAGER WHERE CONSUMERID=? ORDER BY ORDERDATE DESC";
+    String sql = "select ODSQ, STORENAME,  CONSUMERID, STATUS, ORDERDATE from ORDERMANAGER m, STORE s where m.MMSQ = s.MMSQ AND CONSUMERID=? ORDER BY  ORDERDATE DESC";
     try {
       pstmt= conn.prepareStatement(sql);
       pstmt.setString(1, LoginSession.id);
       rs = pstmt.executeQuery();
+      System.out.println("\n[주문상태확인]");
+      System.out.println(" -----------------------------------------------------------------------------------------------------------------------");
+      System.out.printf("| %-5s\t| %-10s\t| %-10s\t| %-10s\t| %-34s|%n", "주문번호", "가게이름", "주문자", "주문상태", "주문시간");
+      System.out.println(" -----------------------------------------------------------------------------------------------------------------------");
       while(rs.next()) {
-        System.out.printf("%d %s %s%n%n", rs.getInt("ODSQ"), rs.getString("STATUS"), rs.getDate("ORDERDATE"));
+        System.out.printf("|%-10d\t| %-10s\t| %-10s\t| %-15s\t| %-30s\t|%n", rs.getInt("ODSQ"), rs.getString("STORENAME"), rs.getString("CONSUMERID"), rs.getString("STATUS"), orderdate.format(rs.getTimestamp("ORDERDATE")));
       }
+      System.out.println(" -----------------------------------------------------------------------------------------------------------------------");
     } catch (SQLException e) {
       // TODO Auto-generated catch block
       e.printStackTrace();
+
     }
   }
 

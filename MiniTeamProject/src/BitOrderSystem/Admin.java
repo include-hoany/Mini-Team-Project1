@@ -67,15 +67,13 @@ public class Admin {
 
     // 쓰레드 슬립을 사용한 이유는 혹시나 빠르게 디비 연산을 하다보면 돌연사 할까봐...
     try {Thread.sleep(2000);} catch (InterruptedException ic) {}
-    db.insertStoreMember(id, pw, nickname, pn);
+    db.insertMember(id, pw, nickname, pn, "STORE");
 
     try {Thread.sleep(2000);} catch (InterruptedException ic) {}
 
     int tempMMSQ = db.searchStoreId(id);
     try {Thread.sleep(2000);} catch (InterruptedException ic) {}
     db.insertStoreTable(tempMMSQ, storename, address, category);
-
-    System.out.println("방금 입력된 가게번호: " + db.getLastMMSQ());
 
   }
 
