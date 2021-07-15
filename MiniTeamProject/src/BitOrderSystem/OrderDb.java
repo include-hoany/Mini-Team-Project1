@@ -51,7 +51,8 @@ public class OrderDb {
       pstmt.setString(5, authority);
 
       if(pstmt.executeUpdate() > 0) {
-        System.out.println("가게아이디 등록에 성공하였습니다.");
+        if(authority.equals("CONSUMER")) System.out.println("고객 아이디 등록에 성공하였습니다.");
+        if(authority.equals("STORE")) System.out.println("가게아이디 등록에 성공하였습니다.");
       } else {
         System.out.println("가게아이디 등록에 실패하였습니다.");
 
@@ -412,7 +413,7 @@ public class OrderDb {
 
   public Integer[] getOrderNum() {
     String sql="select odsq from ordermanager where mmsq=?";    
-    ArrayList tmp=new ArrayList();
+    ArrayList<Integer> tmp=new ArrayList<Integer>();
     Integer[] arrOrderNum=null;
 
     try {
@@ -426,7 +427,7 @@ public class OrderDb {
       arrOrderNum=new Integer[tmp.size()];
 
       for (int i=0;i<tmp.size();i++) 
-        arrOrderNum[i]=(Integer)tmp.get(i);
+        arrOrderNum[i]=tmp.get(i);
 
     } catch (SQLException e) {
       System.out.println("오류입니다용~!");

@@ -13,6 +13,7 @@ public class BitOrderSystem {
   public static void main(String[] args) {
     int index = 9;
     System.out.println("[방문포장 시스템]");
+
     while(true) {
       try {
         System.out.print("[1.로그인 2.회원가입 9.종료] >> ");
@@ -68,7 +69,7 @@ public class BitOrderSystem {
           owner.process();
           break;
         case "CONSUMER":
-          System.out.println("로그인성공 소비자 계정입니다.\n");
+          System.out.println("로그인성공 고객 계정입니다.\n");
           consumer.process();
           break;
       } // end switch

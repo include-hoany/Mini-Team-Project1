@@ -66,6 +66,10 @@ public class Consumer {
       return;
     }
     String[] menuNames = db.showMenuNames(storeNumber);
+    if(menuNames.length == 0) {
+      System.out.println("가게에 등록되어 있는 메뉴가 존재하지 않습니다. 주문을 종료합니다.");
+      return;
+    }
     System.out.println("[메뉴리스트]");
     for (int i=0;i<menuNames.length;i++) System.out.print((i+1)+"."+menuNames[i]+"\t");
     System.out.print("\n주문을 접수 하시겠습니까? (y/n) >> ");
@@ -129,7 +133,7 @@ public class Consumer {
     String pw = sc.nextLine().trim();
     System.out.print("닉네임 >> ");
     String nickname = sc.nextLine().trim();
-    System.out.print("전화번호 >> ");
+    System.out.print("전화번호 ex)010-0000-0000 >> ");
     String pn = sc.nextLine().trim();
 
     // 쓰레드 슬립을 사용한 이유는 혹시나 빠르게 디비 연산을 하다보면 돌연사 할까봐...

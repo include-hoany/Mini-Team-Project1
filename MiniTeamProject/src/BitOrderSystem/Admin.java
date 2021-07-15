@@ -56,7 +56,7 @@ public class Admin {
     String pw = sc.nextLine().trim();
     System.out.print("닉네임 >> ");
     String nickname = sc.nextLine().trim();
-    System.out.print("전화번호 >> ");
+    System.out.print("전화번호 ex)010-0000-0000 >> ");
     String pn = sc.nextLine().trim();
     System.out.print("가게이름 >> ");
     String storename = sc.nextLine().trim();
