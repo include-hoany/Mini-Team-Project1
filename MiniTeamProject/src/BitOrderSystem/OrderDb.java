@@ -19,6 +19,7 @@ public class OrderDb {
   final String url = "jdbc:oracle:thin:@3.35.51.147:6006:XE";
   final SimpleDateFormat orderdate = new SimpleDateFormat("yyyy년 MM월 dd일 HH시 mm분 ss초");
 
+  // OrderDB 생성자
   OrderDb() {
     try {
       Class.forName(driver);

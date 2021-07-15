@@ -11,6 +11,11 @@ public class BitOrderSystem {
 
   // BitOrderSystem 메인 메소드
   public static void main(String[] args) {
+    mainProcess();
+
+  } // end main
+
+  public static void mainProcess() {
     int index = 9;
     System.out.println("[방문포장 시스템]");
 
@@ -45,7 +50,7 @@ public class BitOrderSystem {
 
     } // end while
 
-  } // end main
+  } // end Method mainProcess
 
   // ID와 PW를 입력받아 데이터베이스에 확인하고 ID와 PW가 맞다면 로그인 하는 메소드
   public static void login() {
@@ -83,6 +88,5 @@ public class BitOrderSystem {
     } // end try / catch
 
   } // end Method login 
-
 
 } // end Class BitOrderSystem
