@@ -16,38 +16,45 @@ public class Consumer {
 
   // 소비자 메뉴를 보여주는 메소드
   public void process() {
-    System.out.println("[소비자 메뉴]");
-    loop:
-      while(true) {
-        System.out.print("[ 1. 주문  2. 주문상태확인 3. 리뷰등록 4. 리뷰보기 9. 로그아웃 ] >> ");
-        int index = Integer.parseInt(sc.nextLine());
-        switch(index) {
-          case 1:
-            //주문 메소드 작동
-            Order();
-            break;
-          case 2:
-            //주문상태확인 메소드 작동
-            checkOrderStatus();
-            break;
-          case 3:
-            //리뷰등록 메소드 작성
-            enrollReview();
-            break;
-          case 4:
-            //리뷰 보기
-            viewReview();
-            break;
-          case 9:
-            // 로그아웃
-            LoginSession.logout();
-            break loop;
-          default:
-            System.out.println("잘못 입력하셨습니다.");
-            break;
+    System.out.println("[고객 메뉴]");
+    try {
+      loop:
+        while(true) {
+          System.out.print("[ 1. 주문  2. 주문상태확인 3. 리뷰등록 4. 리뷰보기 9. 로그아웃 ] >> ");
+          int index = Integer.parseInt(sc.nextLine());
+          switch(index) {
+            case 1:
+              //주문 메소드 작동
+              Order();
+              break;
+            case 2:
+              //주문상태확인 메소드 작동
+              checkOrderStatus();
+              break;
+            case 3:
+              //리뷰등록 메소드 작성
+              enrollReview();
+              break;
+            case 4:
+              //리뷰 보기
+              viewReview();
+              break;
+            case 9:
+              // 로그아웃
+              LoginSession.logout();
+              break loop;
+            default:
+              System.out.println("잘못된 번호를 입력하셨습니다.");
+              break;
+          }
 
-        }
-      }    
+        } // end while
+
+    } catch(NumberFormatException nfe) {
+      System.out.println("숫자만 입력해 주세요..");
+
+    } // end try / catch
+
   } // end Method process
 
   public void Order() {

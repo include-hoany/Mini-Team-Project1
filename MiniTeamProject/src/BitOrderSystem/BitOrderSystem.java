@@ -57,6 +57,7 @@ public class BitOrderSystem {
     db.loginsql(id, pw);
 
     try {    
+      // LoginSession.authority 변수에 값을 읽어와 SWITCH로 분기한다.
       switch(LoginSession.authority) {
         case "ADMIN":
           System.out.println("로그인성공 관리자 계정입니다.\n");
@@ -75,20 +76,12 @@ public class BitOrderSystem {
     } catch(NullPointerException npe) {
       System.out.println("아이디 또는 패스워드가 맞지 않습니다.");
 
+    } catch(Exception e) {
+      System.out.println("알수없는 오류..");
+
     } // end try / catch
 
   } // end Method login 
 
-  // LoginSession.authority 변수에 값을 읽어와 SWITCH로 분기한다.
-
-  // 로그아웃 메소드 LoginSession의 스타틱 변수 값을 null, false로 초기화 시킨다.
-  public static void logout() {
-    LoginSession.mmsq = 0;
-    LoginSession.id = null;
-    LoginSession.nickname = null;
-    LoginSession.authority = null;
-    LoginSession.isLogin = false;
-
-  }
 
 } // end Class BitOrderSystem
