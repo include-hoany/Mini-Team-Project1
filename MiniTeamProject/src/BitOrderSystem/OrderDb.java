@@ -414,15 +414,16 @@ public class OrderDb {
       rs=pstmt.executeQuery();
 
       while (rs.next()) {
-        tmp.add(rs.getInt("ordsq"));
+        tmp.add(rs.getInt("odsq"));
       }
       arrOrderNum=new Integer[tmp.size()];
 
       for (int i=0;i<tmp.size();i++) 
-        arrOrderNum[i]=(Integer)(tmp.get(i));
+        arrOrderNum[i]=(Integer)tmp.get(i);
 
     } catch (SQLException e) {
-      System.out.println("오류 발생!");
+      System.out.println("오류입니다용~!");
+      e.printStackTrace();
     }
     return arrOrderNum;
   }
