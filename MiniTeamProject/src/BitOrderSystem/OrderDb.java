@@ -8,6 +8,7 @@ import java.sql.SQLException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 
+// 디비 클래스
 public class OrderDb {
   Connection conn = null;
   PreparedStatement pstmt = null;

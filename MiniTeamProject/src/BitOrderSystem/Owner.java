@@ -2,6 +2,7 @@ package BitOrderSystem;
 
 import java.util.Scanner;
 
+// 가게 클래스
 public class Owner {
   OrderDb db = null;
   Scanner sc = null;

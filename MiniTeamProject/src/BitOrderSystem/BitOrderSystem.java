@@ -2,6 +2,7 @@ package BitOrderSystem;
 
 import java.util.Scanner;
 
+// 메인 실행이 있는 방문포장 주문 시스템 클래스
 public class BitOrderSystem {
   static Scanner sc = new Scanner(System.in);
   static OrderDb db = new OrderDb();
@@ -15,6 +16,7 @@ public class BitOrderSystem {
 
   } // end main
 
+  // BitOrderSystem 실행 메소드
   public static void mainProcess() {
     int index = 9;
     System.out.println("[방문포장 시스템]");

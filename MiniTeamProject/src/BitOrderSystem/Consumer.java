@@ -3,6 +3,7 @@ package BitOrderSystem;
 import java.util.ArrayList;
 import java.util.Scanner;
 
+// 고객 클래스
 public class Consumer {
   OrderDb db = null;
   Scanner sc = null;
@@ -124,9 +125,9 @@ public class Consumer {
 
   } // end Method checkOrderStatus
 
-  // 소비자 회원가입
+  // 고객 회원가입
   public void enrollConsumer() {
-    System.out.println("[회원가입]");
+    System.out.println("\n[회원가입]");
     System.out.print("아이디 >> ");
     String id = sc.nextLine().trim();
     System.out.print("패스워드 >> ");
@@ -139,7 +140,6 @@ public class Consumer {
     // 쓰레드 슬립을 사용한 이유는 혹시나 빠르게 디비 연산을 하다보면 돌연사 할까봐...
     try {Thread.sleep(2000);} catch (InterruptedException ic) {}
     db.insertMember(id, pw, nickname, pn, "CONSUMER");
-    System.out.println("회원가입 완료!");
 
   }
 
