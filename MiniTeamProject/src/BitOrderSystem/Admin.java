@@ -48,7 +48,7 @@ public class Admin {
 
   }
 
-  // public 가게등록 메소드 장동....
+  // 가게를 등록하는 메소드
   public void enrollStore() {
     System.out.print("아이디 >> ");
     String id = sc.nextLine().trim();

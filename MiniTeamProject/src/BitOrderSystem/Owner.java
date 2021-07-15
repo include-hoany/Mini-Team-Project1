@@ -12,7 +12,8 @@ public class Owner {
   Owner() {
     this.db = BitOrderSystem.db;
     this.sc = BitOrderSystem.sc;
-  }
+
+  } // end Constructor Owner
 
   // 가게 메뉴를 보여주는 메소드
   public void process() {
@@ -35,11 +36,12 @@ public class Owner {
             System.out.println("잘못 입력하였습니다.");
             break;
         }
+
       } catch (Exception e) {
         System.out.println("숫자를 입력해주세요.");
       }
     }
-  }
+  } // end Method process
 
   public void enrollMenu() {
     try {
@@ -69,8 +71,9 @@ public class Owner {
       System.out.println();
     } catch (Exception e) {
       System.out.println("형식에 맞지 않네요~");
+      System.out.println(e.getMessage());
     } 
-  }
+  } // end Method enrollMenu
 
   public void modifyMenu() {
     try {
@@ -98,8 +101,10 @@ public class Owner {
       System.out.println("번호를 제대로 입력해주세요.");
     } catch (Exception e) {
       System.out.println("형식에 맞지 않네요~");
+      e.printStackTrace();
+
     }
-  }
+  } // end Method modifyMenu
 
   public void processOrder() { // 주문 내역의 주문상태를 처리하는 메서드~
     try {
@@ -132,8 +137,9 @@ public class Owner {
     } catch (Exception e) {
       System.out.println("형식에 맞지 않아요~");
       return;
+
     }
-  }
+  } // end Method processOrder
 
   public void notice() { //db.store 테이블의 공지를 등록하는 메서드(notice)
     System.out.print("공지사항을 등록해주세요.>>>");
@@ -144,5 +150,7 @@ public class Owner {
     } catch (Exception e) {
       System.out.println("오류 입니다~");
     }
-  }
+
+  } // end Method notice
+
 }

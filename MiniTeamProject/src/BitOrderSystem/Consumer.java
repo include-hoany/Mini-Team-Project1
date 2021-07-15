@@ -10,7 +10,8 @@ public class Consumer {
   Consumer() {
     this.db = BitOrderSystem.db;
     this.sc = BitOrderSystem.sc;
-  }
+
+  } // end Constructor Consumer
 
   // 소비자 메뉴를 보여주는 메소드
   public void process() {
@@ -43,9 +44,10 @@ public class Consumer {
           default:
             System.out.println("잘못 입력하셨습니다.");
             break;
+
         }
-      }
-  }
+      }    
+  } // end Method process
 
   public void Order() {
     db.searchStoreList();
@@ -54,24 +56,23 @@ public class Consumer {
     String[] menuNames = db.showMenuNames(storeNumber);
     db.getReceiptNumber(storeNumber);
     int odsq = db.getLastODSQ();
+
     while(true) {
-      for (int i=0;i<menuNames.length;i++) {
-        System.out.print((i+1)+"."+menuNames[i]+"\t");
-      }
+      for (int i=0;i<menuNames.length;i++) System.out.print((i+1)+"."+menuNames[i]+"\t");
       System.out.print("\n주문할 메뉴 번호를 입력하세요. ");
       int menuNumber = Integer.parseInt(sc.nextLine());
-      // 데이터 연산처리 예정
+
       db.insertOrderDetail(odsq, storeNumber, menuNames[menuNumber-1]);
+
       System.out.print("더 주문하시겠습니까? (y/n) ");
       String choice = sc.nextLine();
-      if(choice.equals("n")) {
-        break;
-      }
+
+      if(choice.equals("n")) break;
     }
 
     System.out.println("주문이 완료되었습니다.");
 
-  }
+  } // end Method Order
 
   public void enrollReview() {
     db.searchStoreList();
@@ -79,10 +80,9 @@ public class Consumer {
     int storeNumber = Integer.parseInt(sc.nextLine());
     System.out.print("리뷰 내용을 작성하세요 ");
     String comment = sc.nextLine();
-
-    // 디비등록
     db.enrollReviewdb(storeNumber, comment);
-  }
+
+  } // end Method enrollReview
 
   public void viewReview() {
     db.searchStoreList();
@@ -90,14 +90,13 @@ public class Consumer {
     int storeNumber = Integer.parseInt(sc.nextLine());
     db.showReview(storeNumber);
 
-  }
+
+  } // Method viewReview
 
 
   public void checkOrderStatus() {
     db.showMyOrder();
-  }
 
+  } // end Method checkOrderStatus
 
-
-
-}
+} // end Class Consumer

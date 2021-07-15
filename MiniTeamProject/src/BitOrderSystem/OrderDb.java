@@ -5,14 +5,12 @@ import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Statement;
 import java.util.ArrayList;
 
 public class OrderDb {
   Connection conn = null;
   PreparedStatement pstmt = null;
   ResultSet rs = null;
-  Statement st=null;
 
   final String user = "include_hoany";
   final String pw = "1234";
@@ -210,7 +208,8 @@ public class OrderDb {
     } // end try / catch
 
     return temp;
-  }
+
+  } // end Method getLastMMSQ
 
   //가장 최근에 주문된 주문번호를 찾는 메소드.
   public int getLastODSQ() {
@@ -233,7 +232,8 @@ public class OrderDb {
     } // end try / catch
 
     return temp;
-  }
+
+  } // end Method getLastODSQ
 
   // 가게 속성중 STORE테이블의 값을 갱신하는 메소드
   public void updateStoreTable(int mmsq, String storename, String address, String category) {
@@ -253,7 +253,8 @@ public class OrderDb {
 
   } // end Method updateStoreTable
 
-  public String[] showMenuNames(int mmsq) { // 가게 주인의 메뉴를 반환하는 메서드
+  //가게 주인의 메뉴를 반환하는 메서드
+  public String[] showMenuNames(int mmsq) { 
     String sql="select foodname from storemenu where mmsq=?";
     ArrayList<String> menuNames=new ArrayList<String>();
 
@@ -269,9 +270,10 @@ public class OrderDb {
     }
 
     return menuNames.toArray(new String[menuNames.size()]);
-  }
+  } // end Method showMenuNames
 
-  public void showMenu() { // 가게 주인이 자기의 메뉴만을 조회하는 메서드
+  //가게 주인이 자기의 메뉴만을 조회하는 메서드
+  public void showMenu() { 
     int mmsq=LoginSession.mmsq;
     String sql="select * from storemenu where mmsq=?";
 
@@ -296,7 +298,8 @@ public class OrderDb {
     }
   }
 
-  public void registerMenu(String foodName, int foodPrice) { // 가게 메뉴를 등록하는 메서드
+  //가게 메뉴를 등록하는 메서드
+  public void registerMenu(String foodName, int foodPrice) { 
     String sql="insert into storemenu (mmsq,foodname,price) values(?,?,?)";
 
     try {
@@ -311,9 +314,11 @@ public class OrderDb {
     } catch (SQLException e) {
       System.out.println("오류 발생~");
     }
-  }
 
-  public void alterMenu(String prevFoodName, String foodName, int foodPrice) { // 음식이름과 가격을 수정하는 메서드
+  } // end Method registerMenu
+
+  //음식이름과 가격을 수정하는 메서드
+  public void alterMenu(String prevFoodName, String foodName, int foodPrice) { 
     String sql="update storemenu set foodname=?, price=? where mmsq=? and foodname=?";
 
     try {
@@ -330,9 +335,11 @@ public class OrderDb {
     } catch (SQLException e) {
       System.out.println("오류 발생~");
     }
-  }
 
-  public void showOrderManager() { // 가게 소유자의 주문 내역을 조회하는 메서드
+  } // end Method alterMenu
+
+  //가게 소유자의 주문 내역을 조회하는 메서드
+  public void showOrderManager() { 
     int mmsq=LoginSession.mmsq;
     String sql="select * from ordermanager where mmsq=?";
 
@@ -357,9 +364,11 @@ public class OrderDb {
     } catch (SQLException e) {
       System.out.println("오류 발생~");
     }
-  }
 
-  public void handleOrder(int orderNum,String orderMsg) { // 주문 상태를 처리하는 메서드
+  } // end Method showOrderManager
+
+  //주문 상태를 처리하는 메서드
+  public void handleOrder(int orderNum,String orderMsg) { 
     try {
       String sql="update ordermanager set status=? where odsq=?";
       pstmt=conn.prepareStatement(sql);
@@ -374,9 +383,11 @@ public class OrderDb {
     } catch (SQLException e) {
       System.out.println("오류 발생~");
     }
-  }
 
-  public void registerNotice(String notice) { // 공지 등록 메서드
+  } // end Method handleOrder
+
+  //공지 등록 메서드
+  public void registerNotice(String notice) { 
     String sql="update store set notice=? where mmsq=?";
 
     try {
@@ -416,6 +427,7 @@ public class OrderDb {
     return arrOrderNum;
   }
 
+  // 소비자가 리뷰를 등록하는 메소드
   public void enrollReviewdb(int mmsq, String reviewComment) {
     String sql = "INSERT INTO REVIEW(MMSQ, NICKNAME, REVIEWCOMMENT, CREATEDDATE) VALUES(?, ?, ?, sysdate)";
     try {
@@ -433,8 +445,9 @@ public class OrderDb {
       e.printStackTrace();
     }  
 
-  }
+  } // end Method enrollReviewdb
 
+  // 소비자가 해당 가게에 리뷰를 확인하는 메소드
   public void showReview(int mmsq) {
     String sql = "SELECT * FROM REVIEW WHERE MMSQ=?";
     try {
@@ -450,8 +463,9 @@ public class OrderDb {
       e.printStackTrace();
     }
 
-  }
+  } // end Method showReview
 
+  // 소비자가 나의 주문 목록을 확인하는 메소드
   public void showMyOrder() {
     String sql = "SELECT * FROM ORDERMANAGER WHERE CONSUMERID=? ORDER BY ORDERDATE DESC";
     try {
@@ -467,6 +481,7 @@ public class OrderDb {
     }
   }
 
+  // 해당 가게의 메뉴를 출력하는 메소드
   public void showMenuList(int mmsq) {
     String sql = "SELECT * FROM STOREMENU WHERE MMSQ=?";
     try {
@@ -480,8 +495,10 @@ public class OrderDb {
     } catch (SQLException e) {
       e.printStackTrace();
     }
-  }
 
+  } // end Method showMenuList
+
+  // 주문접수와 주문접수번호를 발급받는 메소드
   public void getReceiptNumber(int storeNumber) {
     String sql = "INSERT INTO ORDERMANAGER(ODSQ, MMSQ, CONSUMERID, STATUS, ORDERDATE) "
         + "VALUES(ODSQ.nextval, ?, ?, ?, SYSDATE)";
@@ -500,8 +517,10 @@ public class OrderDb {
       // TODO Auto-generated catch block
       e.printStackTrace();
     }
-  }
 
+  } // end Method getReceiptNumber
+
+  // 주문의 상세 정보를 입력하는 메소드
   public void insertOrderDetail(int odsq, int mmsq, String foodName) {
     String sql = "INSERT INTO ORDERDETAIL(ODSQ, MMSQ, FOODNAME) VALUES(?, ?, ?)";
     try {
@@ -517,7 +536,8 @@ public class OrderDb {
     } catch(SQLException e) {
       e.printStackTrace();
     }
-  }
+
+  } // end Method insertOrderDetail
 
   // 프로그램 종료시 데이터베이스와의 연결을 해제하는 메소드
   public void closeDb() {
