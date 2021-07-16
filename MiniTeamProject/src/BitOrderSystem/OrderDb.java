@@ -14,10 +14,10 @@ public class OrderDb {
   PreparedStatement pstmt = null;
   ResultSet rs = null;
 
-  final String user = "";
-  final String pw = "";
+  final String user = "include_hoany";
+  final String pw = "1234";
   final String driver = "oracle.jdbc.driver.OracleDriver";
-  final String url = "jdbc:oracle:thin:@:XE";
+  final String url = "jdbc:oracle:thin:@3.35.51.147:6006:XE";
   final SimpleDateFormat orderdate = new SimpleDateFormat("yyyy년 MM월 dd일 HH시 mm분 ss초");
 
   // OrderDB 생성자
@@ -29,12 +29,15 @@ public class OrderDb {
 
     } catch(SQLException sqle) {
       System.out.println("디비연결오류");
+      System.exit(1);
 
     } catch(ClassNotFoundException cnfe) {
       System.out.println("드라이버 연결 오류");
+      System.exit(1);
 
     } catch(Exception e) {
       System.out.println("알수없는 오류..");
+      System.exit(1);
 
     } // end try / catch
 
@@ -53,8 +56,8 @@ public class OrderDb {
       pstmt.setString(5, authority);
 
       if(pstmt.executeUpdate() > 0) {
-        if(authority.equals("CONSUMER")) System.out.println("고객 아이디 등록에 성공하였습니다.\n");
-        if(authority.equals("STORE")) System.out.println("가게아이디 등록에 성공하였습니다.\n");
+        if(authority.equals("CONSUMER")) System.out.println("\n고객 아이디 등록에 성공하였습니다.\n");
+        if(authority.equals("STORE")) System.out.println("\n가게아이디 등록에 성공하였습니다.\n");
       } else {
         System.out.println("가게아이디 등록에 실패하였습니다.");
 
@@ -575,11 +578,11 @@ public class OrderDb {
   } // end Method insertOrderDetail
 
   //고객 탈퇴시 멤버 매니저 테이블에서 삭제하는 메소드
-  public void deleteMember() {
+  public void deleteMember(int mmsq) {
     String sql = "DELETE FROM MEMBERMANAGER WHERE MMSQ=?";
     try {
       pstmt= conn.prepareStatement(sql);
-      pstmt.setInt(1, LoginSession.mmsq);
+      pstmt.setInt(1, mmsq);
       if(pstmt.executeUpdate() > 0) {
         System.out.println("탈퇴가 정상적으로 되었습니다.\n");
       } else {

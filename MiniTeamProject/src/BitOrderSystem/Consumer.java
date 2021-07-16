@@ -51,12 +51,17 @@ public class Consumer {
             default:
               System.out.println("잘못된 번호를 입력하셨습니다.");
               break;
-          }
+
+          } // end switch
 
         } // end while
 
     } catch(NumberFormatException nfe) {
       System.out.println("숫자만 입력해 주세요..");
+
+    } catch (Exception e) {
+      System.out.println("알수없는 에러..");
+      e.printStackTrace();
 
     } // end try / catch
 
@@ -160,7 +165,7 @@ public class Consumer {
     System.out.print("정말 탈퇴 하시겠습니까? (y/n) >> ");
     String choice = sc.nextLine();
     if(choice.equals("y")) {
-      db.deleteMember();
+      db.deleteMember(LoginSession.mmsq);
       return;
     }
 

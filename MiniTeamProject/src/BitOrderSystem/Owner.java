@@ -35,14 +35,22 @@ public class Owner {
             LoginSession.logout(); 
             return;
           default :
-            System.out.println("잘못 입력하였습니다.");
+            System.out.println("잘못된 번호를 입력하였습니다.");
             break;
-        }
+
+        } // end switch 
+
+      } catch(NumberFormatException nfe) {
+        System.out.println("숫자를 입력해주세요.");
 
       } catch (Exception e) {
-        System.out.println("숫자를 입력해주세요.");
-      }
-    }
+        System.out.println("알수없는 에러..");
+        e.printStackTrace();
+
+      } // end try / catch
+
+    } // end while
+
   } // end Method process
 
   public void enrollMenu() {
@@ -156,4 +164,4 @@ public class Owner {
 
   } // end Method notice
 
-}
+} // end Class Owner
