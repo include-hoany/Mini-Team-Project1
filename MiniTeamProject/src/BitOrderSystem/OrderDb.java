@@ -176,7 +176,9 @@ public class OrderDb {
       e.printStackTrace();
 
     } // end try / catch
+
     return indexarr;
+
   } // end Method searchStoreList
 
   // 가게의 속성을 데이터베이스에 갱신하는 메소드
@@ -271,11 +273,11 @@ public class OrderDb {
       pstmt.setInt(1, mmsq);
       rs=pstmt.executeQuery();
 
-      while (rs.next()) 
-        menuNames.add(rs.getString("foodname"));
+      while (rs.next())  menuNames.add(rs.getString("foodname")); // end while
     } catch (SQLException e) {
       System.out.println("오류 발생~!");
-    }
+
+    } // end try / catch
 
     return menuNames.toArray(new String[menuNames.size()]);
   } // end Method showMenuNames
@@ -299,11 +301,14 @@ public class OrderDb {
         String foodName=rs.getString("foodname");
         int foodPrice=rs.getInt("price");
         System.out.printf("%-10d\t %-30s\t %-8d\n",mmsq,foodName,foodPrice);
-      }
+
+      } // end while
+
       System.out.println("----------------------------------------------------------------------");
     } catch (SQLException e) {
       System.out.println("오류 발생~");
-    }
+
+    } // end try / catch
   }
 
   //가게 메뉴를 등록하는 메서드
@@ -323,7 +328,7 @@ public class OrderDb {
     } catch (SQLException e) {
       System.out.println("오류발생");
 
-    }
+    } // end try / catch
 
   } // end Method registerMenu
 
@@ -344,7 +349,8 @@ public class OrderDb {
 
     } catch (SQLException e) {
       System.out.println("오류발생");
-    }
+
+    } // end try / catch
 
   } // end Method alterMenu
 
@@ -369,11 +375,14 @@ public class OrderDb {
         String orderStatus=rs.getString("status");
         String orderDate=rs.getString("orderdate");
         System.out.printf("%-10d\t %-10d\t %-14s\t %-5s\t %-20s\n",orderNum,mmsq,conId,orderStatus,orderDate);
-      }
+      } // end while
+
       System.out.println("----------------------------------------------------------------------------------------");
+
     } catch (SQLException e) {
       System.out.println("오류발생");;
-    }
+
+    } // end try / catch
 
   } // end Method showOrderManager
 
@@ -392,7 +401,8 @@ public class OrderDb {
       }
     } catch (SQLException e) {
       System.out.println("오류발생");
-    }
+
+    } // end try / catch
 
   } // end Method handleOrder
 
@@ -407,10 +417,12 @@ public class OrderDb {
 
       if (pstmt.executeUpdate()>0) {
         System.out.println("공지 등록 완료~!");
-      } else System.out.println("공지 등록 실패~");
+      } else System.out.println("공지 등록 실패~"); // end if / else
     } catch (SQLException e) {
       System.out.println("오류 발생!");
-    }
+
+    } // end try / catch
+
   }
 
   public Integer[] getOrderNum() {
@@ -425,7 +437,8 @@ public class OrderDb {
 
       while (rs.next()) {
         tmp.add(rs.getInt("odsq"));
-      }
+      } // end while
+
       arrOrderNum=new Integer[tmp.size()];
 
       for (int i=0;i<tmp.size();i++) 
@@ -433,7 +446,8 @@ public class OrderDb {
 
     } catch (SQLException e) {
       System.out.println("오류발생");
-    }
+    } // end try / catch
+
     return arrOrderNum;
   }
 
@@ -452,7 +466,8 @@ public class OrderDb {
       }
     } catch (SQLException e) {
       System.out.println("오류발생");
-    }  
+
+    }  // end try / catch 
 
   } // end Method enrollReviewdb
 
@@ -473,7 +488,8 @@ public class OrderDb {
       System.out.println(" ---------------------------------------------------------------------------------------");
     } catch (SQLException e) {
       System.out.println("오류발생");
-    }
+
+    } // end try / catch
 
   } // end Method showReview
 
@@ -494,7 +510,8 @@ public class OrderDb {
       System.out.println(" -----------------------------------------------------------------------------------------------------------------------");
     } catch (SQLException e) {
       System.out.println("오류발생");
-    }
+
+    } // end try / catch
   }
 
   // 해당 가게의 메뉴를 출력하는 메소드
@@ -510,7 +527,8 @@ public class OrderDb {
       }
     } catch (SQLException e) {
       System.out.println("오류발생");
-    }
+
+    } // end try / catch
 
   } // end Method showMenuList
 
@@ -531,7 +549,8 @@ public class OrderDb {
 
     } catch (SQLException e) {
       System.out.println("오류발생");
-    }
+
+    } // end try / catch
 
   } // end Method getReceiptNumber
 
@@ -550,7 +569,8 @@ public class OrderDb {
       }
     } catch(SQLException e) {
       System.out.println("오류발생");
-    }
+
+    } // end try / catch
 
   } // end Method insertOrderDetail
 
@@ -567,8 +587,10 @@ public class OrderDb {
       }
     } catch (SQLException e) {
       System.out.println("오류발생");
-    }
-  }
+
+    } // end try / catch
+
+  } // end Method deleteMember
 
   // 프로그램 종료시 데이터베이스와의 연결을 해제하는 메소드
   public void closeDb() {
