@@ -62,6 +62,7 @@ public class Consumer {
 
   } // end Method process
 
+  //고객이 주문을 접수하는 메소드
   public void Order() {
     ArrayList<Integer> indexarr = db.searchStoreList();
     System.out.print("주문할 가게번호를 입력해주세요. >> ");
@@ -101,6 +102,7 @@ public class Consumer {
 
   } // end Method Order
 
+  // 고객이 리뷰를 작성하는 메소드
   public void enrollReview() {
     ArrayList<Integer> indexarr = db.searchStoreList();
     System.out.print("리뷰를 등록할 가게번호를 입력해주세요. >> ");
@@ -115,15 +117,21 @@ public class Consumer {
 
   } // end Method enrollReview
 
+  // 고객이 리뷰를 확인하는 메소드
   public void viewReview() {
-    db.searchStoreList();
+    ArrayList<Integer> indexarr = db.searchStoreList();
     System.out.print("리뷰를 확인할 가게번호를 입력해주세요. >> ");
     int storeNumber = Integer.parseInt(sc.nextLine());
+    if(!indexarr.contains(storeNumber)) {
+      System.out.println("잘못된 가게번호를 입력 하셨습니다. >> ");
+      return;
+    }
     db.showReview(storeNumber);
 
   } // Method viewReview
 
 
+  // 고객이 요청한 주문의 상태를 확인하는 메소드
   public void checkOrderStatus() {
     db.showMyOrder();
 
