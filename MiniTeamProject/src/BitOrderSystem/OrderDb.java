@@ -564,17 +564,17 @@ public class OrderDb {
   public void showMyOrderDetail(int odsq) {
     String sql = "SELECT * FROM ORDERDETAIL WHERE ODSQ=?";
     try {
+      System.out.printf("%n[주문번호 : %d][합계금액 : %d원]%n", odsq,  getPriceSum(odsq));
       pstmt = conn.prepareStatement(sql);
       pstmt.setInt(1, odsq);
       rs = pstmt.executeQuery();
-      System.out.println("------------------------");
+      System.out.println(" -----------------------");
       System.out.printf("| %-19s|%n", "메뉴명");
-      System.out.println("------------------------");
-
+      System.out.println(" -----------------------");
       while(rs.next()) {
         System.out.printf("| %-10s\t|%n", rs.getString("FOODNAME"));
       }
-      System.out.println("------------------------");
+      System.out.println(" -----------------------");
 
     } catch (SQLException e) {
       System.out.println("존재하지 않은 주문번호 입니다.");
@@ -663,6 +663,27 @@ public class OrderDb {
     } // end try / catch
 
   } // end Method deleteMember
+
+  // 해당 주문번호의 메뉴의 합계 금액을 리턴하는 메소드
+  public int getPriceSum(int odsq) {
+    String sql = "SELECT SUM(PRICE) AS SUM FROM ORDERDETAIL o, STOREMENU s WHERE ODSQ=? and o.MMSQ=s.MMSQ and  o.FOODNAME=s.FOODNAME";
+    int sum = 0;
+    try {
+      pstmt = conn.prepareStatement(sql);
+      pstmt.setInt(1, odsq);
+      rs = pstmt.executeQuery();
+      while(rs.next()) {
+        sum = rs.getInt("SUM");
+      }
+    } catch (SQLException e) {
+      // TODO Auto-generated catch block
+      e.printStackTrace();
+
+    } // end try / catch
+
+    return sum;
+
+  } // end Method getPriceSum
 
   // 프로그램 종료시 데이터베이스와의 연결을 해제하는 메소드
   public void closeDb() {
