@@ -42,66 +42,66 @@
 ## Class And Method 구조
 ### 메인이 있는 클래스
 >class BitOrderSystem
->   >public static void main(String[] args)
->   >public static void mainProcess()
->   >public static void login()
+>- public static void main(String[] args)
+>- public static void mainProcess()
+>- public static void login()
 
 ### 관리자 클래스
 >class Admin
->   >public void process()
->   >public void enrollStore()
->   >public void modifyStore()
+>- public void process()
+>- public void enrollStore()
+>- public void modifyStore()
 
 ### 고객 클래스
 >class Consumer
->   >public void process()
->   >public void Order()
->   >public void enrollReview()
->   >public void viewReview()
->   >public void checkOrderStatus()
->   >public void enrollConsumer()
->   >public void membershipWithdrawal()
+>- public void process()
+>- public void Order()
+>- public void enrollReview()
+>- public void viewReview()
+>- public void checkOrderStatus()
+>- public void enrollConsumer()
+>- public void membershipWithdrawal()
 
 ### 판매자 클래스
 >class Owner
->   >public void process()
->   >public void enrollMenu()
->   >public void modifyMenu()
->   >public void processOrder()
->   >public void notice()
+>- public void process()
+>- public void enrollMenu()
+>- public void modifyMenu()
+>- public void processOrder()
+>- public void notice()
 
 ### 디비 관리 클래스
 >class OrderDb
->   >OrderDb()
->   >public void insertMember(String id, String pw, String nickname, String pn, String authority)
->   >public int searchStoreId(String id)
->   >public void insertStoreTable(int mmsq, String storename, String address, String category)
->   >public void loginsql(String id, String pw)
->   >public ArrayList<Integer> searchStoreList()
->   >public void updateStoreMemberTable(int mmsq, String phone)
->   >public int getLastMMSQ()
->   >public int getLastODSQ()
->   >public void updateStoreTable(int mmsq, String storename, String address, String category)
->   >public String[] showMenuNames(int mmsq)
->   >public void showMenu()
->   >public void registerMenu(String foodName, int foodPrice)
->   >public void alterMenu(String prevFoodName, String foodName, int foodPrice)
->   >public void showOrderManager()
->   >public void handleOrder(int orderNum,String orderMsg)
->   >public void registerNotice(String notice)
->   >public Integer[] getOrderNum()
->   >public void enrollReviewdb(int mmsq, String reviewComment)
->   >public void showReview(int mmsq)
->   >public void showMyOrder()
->   >public void showMenuList(int mmsq)
->   >public void getReceiptNumber(int storeNumber)
->   >public void insertOrderDetail(int odsq, int mmsq, String foodName)
->   >public void deleteMember()
->   >public void closeDb()
+>- OrderDb()
+>- public void insertMember(String id, String pw, String nickname, String pn, String authority)
+>- public int searchStoreId(String id)
+>- public void insertStoreTable(int mmsq, String storename, String address, String category)
+>- public void loginsql(String id, String pw)
+>- public ArrayList<Integer> searchStoreList()
+>- public void updateStoreMemberTable(int mmsq, String phone)
+>- public int getLastMMSQ()
+>- public int getLastODSQ()
+>- public void updateStoreTable(int mmsq, String storename, String address, String category)
+>- public String[] showMenuNames(int mmsq)
+>- public void showMenu()
+>- public void registerMenu(String foodName, int foodPrice)
+>- public void alterMenu(String prevFoodName, String foodName, int foodPrice)
+>- public void showOrderManager()
+>- public void handleOrder(int orderNum,String orderMsg)
+>- public void registerNotice(String notice)
+>- public Integer[] getOrderNum()
+>- public void enrollReviewdb(int mmsq, String reviewComment)
+>- public void showReview(int mmsq)
+>- public void showMyOrder()
+>- public void showMenuList(int mmsq)
+>- public void getReceiptNumber(int storeNumber)
+>- public void insertOrderDetail(int odsq, int mmsq, String foodName)
+>- public void deleteMember()
+>- public void closeDb()
 
 ### 로그인 정보 확인 클래스
 >class LoginSession
->   >public static void logout()
+>- public static void logout()
 ---------------------------------------------------------
 
 ## Table
