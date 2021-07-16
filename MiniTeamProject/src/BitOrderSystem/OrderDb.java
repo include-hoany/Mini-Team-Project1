@@ -53,8 +53,8 @@ public class OrderDb {
       pstmt.setString(5, authority);
 
       if(pstmt.executeUpdate() > 0) {
-        if(authority.equals("CONSUMER")) System.out.println("고객 아이디 등록에 성공하였습니다.");
-        if(authority.equals("STORE")) System.out.println("가게아이디 등록에 성공하였습니다.");
+        if(authority.equals("CONSUMER")) System.out.println("고객 아이디 등록에 성공하였습니다.\n");
+        if(authority.equals("STORE")) System.out.println("가게아이디 등록에 성공하였습니다.\n");
       } else {
         System.out.println("가게아이디 등록에 실패하였습니다.");
 
@@ -321,7 +321,7 @@ public class OrderDb {
       else System.out.println("가게 메뉴 등록 실패!");  
 
     } catch (SQLException e) {
-      System.out.println("오류 발생~");
+      System.out.println("오류발생");
 
     }
 
@@ -343,7 +343,7 @@ public class OrderDb {
       else System.out.println("메뉴 수정 실패!!");
 
     } catch (SQLException e) {
-      System.out.println("오류 발생~");
+      System.out.println("오류발생");
     }
 
   } // end Method alterMenu
@@ -372,7 +372,7 @@ public class OrderDb {
       }
       System.out.println("----------------------------------------------------------------------------------------");
     } catch (SQLException e) {
-      System.out.println("오류 발생~");
+      System.out.println("오류발생");;
     }
 
   } // end Method showOrderManager
@@ -391,7 +391,7 @@ public class OrderDb {
         System.out.println("주문 처리 실패");
       }
     } catch (SQLException e) {
-      System.out.println("오류 발생~");
+      System.out.println("오류발생");
     }
 
   } // end Method handleOrder
@@ -432,8 +432,7 @@ public class OrderDb {
         arrOrderNum[i]=tmp.get(i);
 
     } catch (SQLException e) {
-      System.out.println("오류입니다용~!");
-      e.printStackTrace();
+      System.out.println("오류발생");
     }
     return arrOrderNum;
   }
@@ -452,8 +451,7 @@ public class OrderDb {
         System.out.println("리뷰 등록에 실패하였습니다.");
       }
     } catch (SQLException e) {
-      // TODO Auto-generated catch block
-      e.printStackTrace();
+      System.out.println("오류발생");
     }  
 
   } // end Method enrollReviewdb
@@ -474,8 +472,7 @@ public class OrderDb {
       }
       System.out.println(" ---------------------------------------------------------------------------------------");
     } catch (SQLException e) {
-      // TODO Auto-generated catch block
-      e.printStackTrace();
+      System.out.println("오류발생");
     }
 
   } // end Method showReview
@@ -496,9 +493,7 @@ public class OrderDb {
       }
       System.out.println(" -----------------------------------------------------------------------------------------------------------------------");
     } catch (SQLException e) {
-      // TODO Auto-generated catch block
-      e.printStackTrace();
-
+      System.out.println("오류발생");
     }
   }
 
@@ -514,7 +509,7 @@ public class OrderDb {
         System.out.printf("%d %s %d%n%n", i++, rs.getString("FOODNAME"), rs.getInt("PRICE"));
       }
     } catch (SQLException e) {
-      e.printStackTrace();
+      System.out.println("오류발생");
     }
 
   } // end Method showMenuList
@@ -535,8 +530,7 @@ public class OrderDb {
       }
 
     } catch (SQLException e) {
-      // TODO Auto-generated catch block
-      e.printStackTrace();
+      System.out.println("오류발생");
     }
 
   } // end Method getReceiptNumber
@@ -555,10 +549,26 @@ public class OrderDb {
         System.out.println("메뉴 추가에 실패하였습니다.");
       }
     } catch(SQLException e) {
-      e.printStackTrace();
+      System.out.println("오류발생");
     }
 
   } // end Method insertOrderDetail
+
+  //고객 탈퇴시 멤버 매니저 테이블에서 삭제하는 메소드
+  public void deleteMember() {
+    String sql = "DELETE FROM MEMBERMANAGER WHERE MMSQ=?";
+    try {
+      pstmt= conn.prepareStatement(sql);
+      pstmt.setInt(1, LoginSession.mmsq);
+      if(pstmt.executeUpdate() > 0) {
+        System.out.println("탈퇴가 정상적으로 되었습니다.\n");
+      } else {
+        System.out.println("탈퇴에 실패하였습니다.\n");
+      }
+    } catch (SQLException e) {
+      System.out.println("오류발생");
+    }
+  }
 
   // 프로그램 종료시 데이터베이스와의 연결을 해제하는 메소드
   public void closeDb() {

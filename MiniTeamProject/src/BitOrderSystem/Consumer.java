@@ -21,7 +21,7 @@ public class Consumer {
     try {
       loop:
         while(true) {
-          System.out.print("[ 1. 주문  2. 주문상태확인 3. 리뷰등록 4. 리뷰보기 9. 로그아웃 ] >> ");
+          System.out.print("[ 1. 주문  2. 주문상태확인 3. 리뷰등록 4. 리뷰보기 5. 회원탈퇴 9. 로그아웃 ] >> ");
           int index = Integer.parseInt(sc.nextLine());
           switch(index) {
             case 1:
@@ -40,6 +40,10 @@ public class Consumer {
               //리뷰 보기
               viewReview();
               break;
+            case 5:
+              membershipWithdrawal();
+              LoginSession.logout();
+              break loop;
             case 9:
               // 로그아웃
               LoginSession.logout();
@@ -142,5 +146,18 @@ public class Consumer {
     db.insertMember(id, pw, nickname, pn, "CONSUMER");
 
   }
+
+  //고객 회원탈퇴
+  public void membershipWithdrawal() {
+    System.out.print("정말 탈퇴 하시겠습니까? (y/n) >> ");
+    String choice = sc.nextLine();
+    if(choice.equals("y")) {
+      db.deleteMember();
+      return;
+    }
+
+    System.out.println("탈퇴를 철회하였습니다. >> ");
+
+  } // end Method membershipWithdrawal
 
 } // end Class Consumer

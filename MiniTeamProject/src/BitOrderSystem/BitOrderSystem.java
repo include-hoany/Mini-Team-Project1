@@ -82,7 +82,7 @@ public class BitOrderSystem {
       } // end switch
 
     } catch(NullPointerException npe) {
-      System.out.println("아이디 또는 패스워드가 맞지 않습니다.");
+      System.out.println("존재하지 않는 아이디 이거나, 아이디 또는 패스워드가 맞지 않습니다.");
 
     } catch(Exception e) {
       System.out.println("알수없는 오류..");
