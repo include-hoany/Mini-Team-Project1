@@ -14,10 +14,10 @@ public class OrderDb {
   PreparedStatement pstmt = null;
   ResultSet rs = null;
 
-  final String user = "";
-  final String pw = "";
+  final String user = "include_hoany";
+  final String pw = "1234";
   final String driver = "oracle.jdbc.driver.OracleDriver";
-  final String url = "jdbc:oracle:thin:@:XE";
+  final String url = "jdbc:oracle:thin:@3.35.51.147:6006:XE";
   final SimpleDateFormat orderdate = new SimpleDateFormat("yyyy년 MM월 dd일 HH시 mm분 ss초");
 
   // OrderDB 생성자
@@ -153,6 +153,7 @@ public class OrderDb {
     ArrayList<Integer> indexarr = new ArrayList<Integer>();
     String sql = "SELECT * FROM MEMBERMANAGER m, STORE s WHERE m.AUTHORITY =" 
         + "'" + "STORE" + "'" + "and m.MMSQ = s.MMSQ ORDER BY m.MMSQ";
+
     try {
       pstmt = conn.prepareStatement(sql);
       rs= pstmt.executeQuery();
@@ -267,22 +268,42 @@ public class OrderDb {
   } // end Method updateStoreTable
 
   //가게 주인의 메뉴를 반환하는 메서드
-  public String[] showMenuNames(int mmsq) { 
-    String sql="select foodname from storemenu where mmsq=?";
-    ArrayList<String> menuNames=new ArrayList<String>();
+  public ArrayList<String> showMenuNames(int mmsq , boolean show) { 
+    String sql="SELECT FOODNAME, PRICE FROM STOREMENU WHERE MMSQ=?";
+    ArrayList<String> menuNames = new ArrayList<String>();
 
     try {
       pstmt=conn.prepareStatement(sql);
       pstmt.setInt(1, mmsq);
       rs=pstmt.executeQuery();
+      if(show) {
+        System.out.println("\n[메뉴리스트]");
+        System.out.println(" -------------------------------------");
+        System.out.printf("| %-15s\t| %-10s|%n", "메뉴명", "가격");
+        System.out.println(" -------------------------------------");
+      }
 
-      while (rs.next())  menuNames.add(rs.getString("foodname")); // end while
+      while (rs.next()) {
+        menuNames.add(rs.getString("FOODNAME"));
+        if(show) {
+          System.out.printf("| %-10s\t| %10d원|%n", rs.getString("FOODNAME"), rs.getInt("PRICE"));
+        }
+
+      } // end while
+
+      if(show) {
+        System.out.println(" -------------------------------------");
+      }
+
+
     } catch (SQLException e) {
       System.out.println("오류 발생~!");
+      e.printStackTrace();
 
     } // end try / catch
 
-    return menuNames.toArray(new String[menuNames.size()]);
+    return menuNames;
+
   } // end Method showMenuNames
 
   //가게 주인이 자기의 메뉴만을 조회하는 메서드
@@ -347,8 +368,8 @@ public class OrderDb {
       pstmt.setString(4, prevFoodName);
 
       if (pstmt.executeUpdate() > 0)
-        System.out.println("메뉴 수정 완료!!");
-      else System.out.println("메뉴 수정 실패!!");
+        System.out.println("메뉴 수정 완료!!\n");
+      else System.out.println("메뉴 수정 실패!!\n");
 
     } catch (SQLException e) {
       System.out.println("오류발생");
@@ -368,19 +389,19 @@ public class OrderDb {
       rs=pstmt.executeQuery();
 
       System.out.println("                                   [주문 목록]                                   ");
-      System.out.println("----------------------------------------------------------------------------------------");
+      System.out.println("------------------------------------------------------------------------------------------------");
       System.out.printf("%-5s\t %-5s\t %-10s\t %-5s\t %-10s\n","주문번호","가게번호","주문자", "주문상태", "주문날짜");
-      System.out.println("----------------------------------------------------------------------------------------");
+      System.out.println("------------------------------------------------------------------------------------------------");
 
       while (rs.next()) {
         int orderNum=rs.getInt("odsq");
         String conId=rs.getString("consumerid");
         String orderStatus=rs.getString("status");
-        String orderDate=rs.getString("orderdate");
+        String orderDate=orderdate.format(rs.getTimestamp("orderdate"));
         System.out.printf("%-10d\t %-10d\t %-14s\t %-5s\t %-20s\n",orderNum,mmsq,conId,orderStatus,orderDate);
       } // end while
 
-      System.out.println("----------------------------------------------------------------------------------------");
+      System.out.println("------------------------------------------------------------------------------------------------");
 
     } catch (SQLException e) {
       System.out.println("오류발생");;
@@ -420,14 +441,20 @@ public class OrderDb {
 
       if (pstmt.executeUpdate()>0) {
         System.out.println("공지 등록 완료~!");
-      } else System.out.println("공지 등록 실패~"); // end if / else
+
+      } else {
+        System.out.println("공지 등록 실패~"); 
+
+      } // end if / else
+
     } catch (SQLException e) {
       System.out.println("오류 발생!");
 
     } // end try / catch
 
-  }
+  } // end Method registerNotice
 
+  //주문한 오더넘버를 배열로 넘겨주는 메소드
   public Integer[] getOrderNum() {
     String sql="select odsq from ordermanager where mmsq=?";    
     ArrayList<Integer> tmp=new ArrayList<Integer>();
@@ -440,15 +467,19 @@ public class OrderDb {
 
       while (rs.next()) {
         tmp.add(rs.getInt("odsq"));
+
       } // end while
 
       arrOrderNum=new Integer[tmp.size()];
 
-      for (int i=0;i<tmp.size();i++) 
+      for (int i=0;i<tmp.size();i++) {
         arrOrderNum[i]=tmp.get(i);
+
+      } // end for
 
     } catch (SQLException e) {
       System.out.println("오류발생");
+
     } // end try / catch
 
     return arrOrderNum;
@@ -485,10 +516,14 @@ public class OrderDb {
       System.out.println(" ---------------------------------------------------------------------------------------");
       System.out.printf("| %-10s\t| %-45s\t| %-9s|%n", "닉네임", "리뷰내용", "리뷰작성일");
       System.out.println(" ---------------------------------------------------------------------------------------");
+
       while(rs.next()) {
         System.out.printf("| %-10s\t| %-40s\t| %-11s\t|%n", rs.getString("NICKNAME"), rs.getString("REVIEWCOMMENT"), rs.getDate("CREATEDDATE"));
-      }
+
+      } // end while
+
       System.out.println(" ---------------------------------------------------------------------------------------");
+
     } catch (SQLException e) {
       System.out.println("오류발생");
 
@@ -497,8 +532,9 @@ public class OrderDb {
   } // end Method showReview
 
   // 소비자가 나의 주문 목록을 확인하는 메소드
-  public void showMyOrder() {
-    String sql = "select ODSQ, STORENAME,  CONSUMERID, STATUS, ORDERDATE from ORDERMANAGER m, STORE s where m.MMSQ = s.MMSQ AND CONSUMERID=? ORDER BY  ORDERDATE DESC";
+  public ArrayList<Integer> showMyOrder() {
+    ArrayList<Integer> ordernumber = new ArrayList<Integer>();
+    String sql = "SELECT ODSQ, STORENAME,  CONSUMERID, STATUS, ORDERDATE from ORDERMANAGER m, STORE s WHERE m.MMSQ = s.MMSQ AND CONSUMERID=? ORDER BY  ORDERDATE DESC";
     try {
       pstmt= conn.prepareStatement(sql);
       pstmt.setString(1, LoginSession.id);
@@ -508,14 +544,44 @@ public class OrderDb {
       System.out.printf("| %-5s\t| %-10s\t| %-10s\t| %-10s\t| %-34s|%n", "주문번호", "가게이름", "주문자", "주문상태", "주문시간");
       System.out.println(" -----------------------------------------------------------------------------------------------------------------------");
       while(rs.next()) {
+        ordernumber.add(rs.getInt("ODSQ"));
         System.out.printf("|%-10d\t| %-10s\t| %-10s\t| %-15s\t| %-30s\t|%n", rs.getInt("ODSQ"), rs.getString("STORENAME"), rs.getString("CONSUMERID"), rs.getString("STATUS"), orderdate.format(rs.getTimestamp("ORDERDATE")));
-      }
+
+      } // end while
+
       System.out.println(" -----------------------------------------------------------------------------------------------------------------------");
+
     } catch (SQLException e) {
       System.out.println("오류발생");
 
     } // end try / catch
-  }
+
+    return ordernumber;
+
+  } // end Method showMyOrder
+
+  // 주문번호에 상세 주문내용을 조회하는 메소드 
+  public void showMyOrderDetail(int odsq) {
+    String sql = "SELECT * FROM ORDERDETAIL WHERE ODSQ=?";
+    try {
+      pstmt = conn.prepareStatement(sql);
+      pstmt.setInt(1, odsq);
+      rs = pstmt.executeQuery();
+      System.out.println("------------------------");
+      System.out.printf("| %-19s|%n", "메뉴명");
+      System.out.println("------------------------");
+
+      while(rs.next()) {
+        System.out.printf("| %-10s\t|%n", rs.getString("FOODNAME"));
+      }
+      System.out.println("------------------------");
+
+    } catch (SQLException e) {
+      System.out.println("존재하지 않은 주문번호 입니다.");
+
+    } // end try / catch
+
+  } // end Method showMyOrderDetail
 
   // 해당 가게의 메뉴를 출력하는 메소드
   public void showMenuList(int mmsq) {
@@ -544,11 +610,14 @@ public class OrderDb {
       pstmt.setInt(1, storeNumber);
       pstmt.setString(2, LoginSession.id);
       pstmt.setString(3, "접수중");
+
       if(pstmt.executeUpdate() > 0) {
         System.out.println("접수번호가 발급 되었습니다.");
+
       } else {
         System.out.println("접수번호 발급 실패...");
-      }
+
+      } // end if / else
 
     } catch (SQLException e) {
       System.out.println("오류발생");

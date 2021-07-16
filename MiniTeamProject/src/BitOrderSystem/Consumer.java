@@ -72,36 +72,54 @@ public class Consumer {
     ArrayList<Integer> indexarr = db.searchStoreList();
     System.out.print("주문할 가게번호를 입력해주세요. >> ");
     int storeNumber = Integer.parseInt(sc.nextLine());
+
     if(!indexarr.contains(storeNumber)) {
       System.out.println("잘못된 가게번호를 입력 하셨습니다.");
       return;
-    }
-    String[] menuNames = db.showMenuNames(storeNumber);
-    if(menuNames.length == 0) {
+
+    } // end if
+
+    ArrayList<String> menuNames = db.showMenuNames(storeNumber, true);
+
+    if(menuNames.isEmpty()) {
       System.out.println("가게에 등록되어 있는 메뉴가 존재하지 않습니다. 주문을 종료합니다.");
       return;
-    }
-    System.out.println("[메뉴리스트]");
-    for (int i=0;i<menuNames.length;i++) System.out.print((i+1)+"."+menuNames[i]+"\t");
+
+    } // end if
+
+
+
     System.out.print("\n주문을 접수 하시겠습니까? (y/n) >> ");
     String go = sc.nextLine();
-    if(go.equals("n")) return;
+
+    if(go.equals("n")) {
+      return;
+
+    } // end if
 
     db.getReceiptNumber(storeNumber);
     int odsq = db.getLastODSQ();
 
     while(true) {
-      for (int i=0;i<menuNames.length;i++) System.out.print((i+1)+"."+menuNames[i]+"\t");
+      for (int i=0; i < menuNames.size(); i++) {
+        if((i%5)==0) {
+          System.out.println();
+        }
+
+        System.out.print((i+1)+"."+menuNames.get(i)+"\t");
+      }
+
       System.out.print("\n주문할 메뉴 번호를 입력하세요. >> ");
       int menuNumber = Integer.parseInt(sc.nextLine());
 
-      db.insertOrderDetail(odsq, storeNumber, menuNames[menuNumber-1]);
+      db.insertOrderDetail(odsq, storeNumber, menuNames.get(menuNumber-1));
 
       System.out.print("더 주문하시겠습니까? (y/n) >> ");
       String choice = sc.nextLine();
 
       if(choice.equals("n")) break;
-    }
+
+    } // end while
 
     System.out.println("주문이 완료되었습니다.");
 
@@ -112,10 +130,13 @@ public class Consumer {
     ArrayList<Integer> indexarr = db.searchStoreList();
     System.out.print("리뷰를 등록할 가게번호를 입력해주세요. >> ");
     int storeNumber = Integer.parseInt(sc.nextLine());
+
     if(!indexarr.contains(storeNumber)) {
       System.out.println("잘못된 가게번호를 입력 하셨습니다. >> ");
       return;
+
     }
+
     System.out.print("리뷰 내용을 작성하세요 >> ");
     String comment = sc.nextLine();
     db.enrollReviewdb(storeNumber, comment);
@@ -127,10 +148,13 @@ public class Consumer {
     ArrayList<Integer> indexarr = db.searchStoreList();
     System.out.print("리뷰를 확인할 가게번호를 입력해주세요. >> ");
     int storeNumber = Integer.parseInt(sc.nextLine());
+
     if(!indexarr.contains(storeNumber)) {
       System.out.println("잘못된 가게번호를 입력 하셨습니다. >> ");
       return;
-    }
+
+    } // end if
+
     db.showReview(storeNumber);
 
   } // Method viewReview
@@ -138,7 +162,31 @@ public class Consumer {
 
   // 고객이 요청한 주문의 상태를 확인하는 메소드
   public void checkOrderStatus() {
-    db.showMyOrder();
+    ArrayList<Integer> ordernumber = db.showMyOrder();
+    try {
+      System.out.print("상세 조회 하시겠습니까? (y/n) >> ");
+      if(sc.nextLine().equals("y")) {
+        System.out.print("상세 조회할 주문번호 >> ");
+        int orderdetailnum = Integer.parseInt(sc.nextLine());
+
+        if(!ordernumber.contains(orderdetailnum)) {
+          System.out.println("없는 주문번호 입니다.");
+          return;
+        } // end if
+
+        db.showMyOrderDetail(orderdetailnum);
+
+      } // end if
+
+
+    } catch(NumberFormatException nfe) {
+      System.out.println("숫자만 입력해 주세요.");
+
+    } catch(Exception e) {
+      System.out.println("오류발생.");
+      e.printStackTrace();
+
+    } // end try / catch
 
   } // end Method checkOrderStatus
 
@@ -158,16 +206,18 @@ public class Consumer {
     try {Thread.sleep(2000);} catch (InterruptedException ic) {}
     db.insertMember(id, pw, nickname, pn, "CONSUMER");
 
-  }
+  } // end enrollConsumer
 
   //고객 회원탈퇴
   public void membershipWithdrawal() {
     System.out.print("정말 탈퇴 하시겠습니까? (y/n) >> ");
     String choice = sc.nextLine();
+
     if(choice.equals("y")) {
       db.deleteMember(LoginSession.mmsq);
       return;
-    }
+
+    } // end if
 
     System.out.println("탈퇴를 철회하였습니다. >> ");
 
