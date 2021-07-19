@@ -46,6 +46,7 @@ public class Consumer {
               break loop;
             case 9:
               // 로그아웃
+              System.out.println("고객 로그아웃\n");
               LoginSession.logout();
               break loop;
             default:
@@ -80,6 +81,7 @@ public class Consumer {
     } // end if
 
     ArrayList<String> menuNames = db.showMenuNames(storeNumber, true);
+    System.out.printf("[공지 : %s]", db.getNotice(storeNumber));
 
     if(menuNames.isEmpty()) {
       System.out.println("가게에 등록되어 있는 메뉴가 존재하지 않습니다. 주문을 종료합니다.");

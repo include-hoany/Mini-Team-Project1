@@ -23,7 +23,7 @@ public class BitOrderSystem {
 
     while(true) {
       try {
-        System.out.print("[1.로그인 2.회원가입 9.종료] >> ");
+        System.out.print("[1.로그인 2. 고객 회원가입 9.종료] >> ");
         index = Integer.parseInt(sc.nextLine());
         switch(index) {
           case 1:
@@ -82,7 +82,7 @@ public class BitOrderSystem {
       } // end switch
 
     } catch(NullPointerException npe) {
-      System.out.println("존재하지 않는 아이디 이거나, 아이디 또는 패스워드가 맞지 않습니다.");
+      System.out.println("\n존재하지 않는 아이디 이거나, 아이디 또는 패스워드가 맞지 않습니다.\n");
 
     } catch(Exception e) {
       System.out.println("알수없는 오류..");

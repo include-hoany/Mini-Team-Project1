@@ -70,7 +70,7 @@ public class Owner {
 
         } // end if
 
-      } // end if
+      } // end for
 
       System.out.print("가격은 얼마죠?>>>");
       int foodPrice=Integer.parseInt(sc.nextLine());
@@ -85,9 +85,11 @@ public class Owner {
 
       db.registerMenu(foodName,foodPrice); // 가게 메뉴를 등록하는 메서드
       System.out.println();
+
+    } catch(NumberFormatException nfe) {
+      System.out.println("숫자만 입력해 주세요.");
     } catch (Exception e) {
       System.out.println("형식에 맞지 않네요~");
-      System.out.println(e.getMessage());
 
     } // end try / catch
 
@@ -121,7 +123,7 @@ public class Owner {
       System.out.print("이름을 어떻게 바꾸시겠습니까?>>");
       String foodName=sc.nextLine();
 
-      System.out.print("바꾸고자 하는 음식의 가격을 적어주세요. >> ");
+      System.out.print("변경하고자 하는 음식의 가격을 적어주세요. >> ");
       int foodPrice=Integer.parseInt(sc.nextLine());
 
       db.alterMenu(prevFoodName,foodName, foodPrice);
@@ -130,7 +132,7 @@ public class Owner {
 
     } catch (Exception e) {
       System.out.println("형식에 맞지 않네요~");
-      e.printStackTrace();
+
 
     } // end try / catch
 
@@ -142,7 +144,7 @@ public class Owner {
 
     try {
       db.showOrderManager(); // 가게 소유자 자신의 주문 내역을 조회
-      System.out.print("주문번호를 입력하세요.>>>");
+      System.out.print("주문번호를 입력하세요. >> ");
       int orderNum=Integer.parseInt(sc.nextLine());
 
       for (Integer i:orderNumbers) {
@@ -165,7 +167,7 @@ public class Owner {
       } // end for
 
       System.out.println();
-      System.out.print("주문상태를 골라주세요.>>>");
+      System.out.print("주문상태를 골라주세요. >> ");
       int num=Integer.parseInt(sc.nextLine());
       String orderMsg=orderStatus[num-1];
 
@@ -187,12 +189,12 @@ public class Owner {
 
     try {
       db.showOrderManager(); // 가게 소유자 자신의 주문 내역을 조회
-      System.out.print("주문번호를 입력하세요.>>>");
+      System.out.print("주문번호를 입력하세요. >> ");
       int orderNum=Integer.parseInt(sc.nextLine());
 
       for (Integer i:orderNumbers) {
         if (orderNum==i) 
-          count++;
+          count++; // end if
 
       } // end for
 
@@ -215,7 +217,7 @@ public class Owner {
   } // end Method processOrder
 
   public void notice() { //db.store 테이블의 공지를 등록하는 메서드(notice)
-    System.out.print("공지사항을 등록해주세요.>>>");
+    System.out.print("공지사항을 등록해주세요. >> ");
 
     try {
       String notice=sc.nextLine();

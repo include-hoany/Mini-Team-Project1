@@ -20,7 +20,7 @@ public class Admin {
     adminloop: 
       while(true) {
         try {
-          System.out.print("[ 1. 가게등록  2. 가게수정 3. 가게삭제  9.로그아웃 ] >> ");
+          System.out.print("[ 1. 가게등록  2. 가게수정  3. 가게삭제  9.로그아웃 ] >> ");
           index = Integer.parseInt(sc.nextLine());
           switch(index) {
             case 1:

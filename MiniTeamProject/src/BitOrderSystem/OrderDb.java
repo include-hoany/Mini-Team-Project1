@@ -14,10 +14,10 @@ public class OrderDb {
   PreparedStatement pstmt = null;
   ResultSet rs = null;
 
-  final String user = "";
-  final String pw = "";
+  final String user = "include_hoany";
+  final String pw = "1234";
   final String driver = "oracle.jdbc.driver.OracleDriver";
-  final String url = "jdbc:oracle:thin:@:XE";
+  final String url = "jdbc:oracle:thin:@3.36.124.230:6006:XE";
   final SimpleDateFormat orderdate = new SimpleDateFormat("yyyy년 MM월 dd일 HH시 mm분 ss초");
 
   // OrderDB 생성자
@@ -56,8 +56,8 @@ public class OrderDb {
       pstmt.setString(5, authority);
 
       if(pstmt.executeUpdate() > 0) {
-        if(authority.equals("CONSUMER")) System.out.println("\n고객 아이디 등록에 성공하였습니다.\n");
-        if(authority.equals("STORE")) System.out.println("\n가게아이디 등록에 성공하였습니다.\n");
+        if(authority.equals("CONSUMER")) System.out.println("\n고객 아이디 등록에 성공하였습니다.");
+        if(authority.equals("STORE")) System.out.println("\n가게아이디 등록에 성공하였습니다.");
       } else {
         System.out.println("가게아이디 등록에 실패하였습니다.");
 
@@ -107,9 +107,10 @@ public class OrderDb {
       pstmt.setString(5, "공지등록안됨");
 
       if(pstmt.executeUpdate() > 0) {
-        System.out.println("가게등록이 완료 되었습니다.");
+        System.out.println("가게등록이 완료 되었습니다.\n");
+
       } else {
-        System.out.println("가게등록에 실패하였습니다.");
+        System.out.println("가게등록에 실패하였습니다.\n ");
 
       } // end if else
 
@@ -205,6 +206,7 @@ public class OrderDb {
   public int getLastMMSQ() {
     String sql = "SELECT MMSQ.currval FROM dual";
     int temp = 0;
+
     try {
       pstmt = conn.prepareStatement(sql);
       rs = pstmt.executeQuery();
@@ -212,7 +214,7 @@ public class OrderDb {
       while(rs.next()) {
         temp = rs.getInt("CURRVAL");
 
-      }
+      } // end while
 
       return temp;
 
@@ -229,6 +231,7 @@ public class OrderDb {
   public int getLastODSQ() {
     String sql = "SELECT ODSQ.currval FROM dual";
     int temp = 0;
+
     try {
       pstmt = conn.prepareStatement(sql);
       rs = pstmt.executeQuery();
@@ -236,7 +239,7 @@ public class OrderDb {
       while(rs.next()) {
         temp = rs.getInt("CURRVAL");
 
-      }
+      } // end while
 
       return temp;
 
@@ -252,6 +255,7 @@ public class OrderDb {
   // 가게 속성중 STORE테이블의 값을 갱신하는 메소드
   public void updateStoreTable(int mmsq, String storename, String address, String category) {
     String sql = "UPDATE STORE SET STORENAME=?, ADDRESS=?, CATEGORY=? WHERE MMSQ=?";
+
     try {
       pstmt = conn.prepareStatement(sql);
       pstmt.setString(1, storename);
@@ -276,29 +280,33 @@ public class OrderDb {
       pstmt=conn.prepareStatement(sql);
       pstmt.setInt(1, mmsq);
       rs=pstmt.executeQuery();
+
       if(show) {
         System.out.println("\n[메뉴리스트]");
         System.out.println(" -------------------------------------");
         System.out.printf("| %-15s\t| %-10s|%n", "메뉴명", "가격");
         System.out.println(" -------------------------------------");
-      }
+
+      } // end if
 
       while (rs.next()) {
         menuNames.add(rs.getString("FOODNAME"));
+
         if(show) {
           System.out.printf("| %-10s\t| %10d원|%n", rs.getString("FOODNAME"), rs.getInt("PRICE"));
-        }
+
+        } // end if
 
       } // end while
 
       if(show) {
         System.out.println(" -------------------------------------");
-      }
+
+      } // end if
 
 
     } catch (SQLException e) {
       System.out.println("오류 발생~!");
-      e.printStackTrace();
 
     } // end try / catch
 
@@ -329,6 +337,7 @@ public class OrderDb {
       } // end while
 
       System.out.println("----------------------------------------------------------------------");
+
     } catch (SQLException e) {
       System.out.println("오류 발생~");
 
@@ -347,7 +356,7 @@ public class OrderDb {
 
       if (pstmt.executeUpdate()>0) 
         System.out.println("가게 메뉴 등록 완료!");
-      else System.out.println("가게 메뉴 등록 실패!");  
+      else System.out.println("가게 메뉴 등록 실패!");  // end if / else
 
     } catch (SQLException e) {
       System.out.println("오류발생");
@@ -369,7 +378,7 @@ public class OrderDb {
 
       if (pstmt.executeUpdate() > 0)
         System.out.println("메뉴 수정 완료!!\n");
-      else System.out.println("메뉴 수정 실패!!\n");
+      else System.out.println("메뉴 수정 실패!!\n"); // end if else
 
     } catch (SQLException e) {
       System.out.println("오류발생");
@@ -399,6 +408,7 @@ public class OrderDb {
         String orderStatus=rs.getString("status");
         String orderDate=orderdate.format(rs.getTimestamp("orderdate"));
         System.out.printf("%-10d\t %-10d\t %-14s\t %-5s\t %-20s\n",orderNum,mmsq,conId,orderStatus,orderDate);
+
       } // end while
 
       System.out.println("------------------------------------------------------------------------------------------------");
@@ -420,9 +430,12 @@ public class OrderDb {
 
       if (pstmt.executeUpdate() >0) {
         System.out.println("주문 처리 완료!");
+
       } else {
         System.out.println("주문 처리 실패");
-      }
+
+      } // end if / else
+
     } catch (SQLException e) {
       System.out.println("오류발생");
 
@@ -488,6 +501,7 @@ public class OrderDb {
   // 소비자가 리뷰를 등록하는 메소드
   public void enrollReviewdb(int mmsq, String reviewComment) {
     String sql = "INSERT INTO REVIEW(MMSQ, NICKNAME, REVIEWCOMMENT, CREATEDDATE) VALUES(?, ?, ?, sysdate)";
+
     try {
       pstmt = conn.prepareStatement(sql);
       pstmt.setInt(1, mmsq);
@@ -495,9 +509,12 @@ public class OrderDb {
       pstmt.setString(3, reviewComment);
       if(pstmt.executeUpdate() > 0) {
         System.out.println("리뷰 등록 완료!");
+
       } else {
         System.out.println("리뷰 등록에 실패하였습니다.");
-      }
+
+      } // end if / else
+
     } catch (SQLException e) {
       System.out.println("오류발생");
 
@@ -508,6 +525,7 @@ public class OrderDb {
   // 소비자가 해당 가게에 리뷰를 확인하는 메소드
   public void showReview(int mmsq) {
     String sql = "SELECT * FROM REVIEW WHERE MMSQ=?";
+
     try {
       pstmt = conn.prepareStatement(sql);
       pstmt.setInt(1, mmsq);
@@ -535,6 +553,7 @@ public class OrderDb {
   public ArrayList<Integer> showMyOrder() {
     ArrayList<Integer> ordernumber = new ArrayList<Integer>();
     String sql = "SELECT ODSQ, STORENAME,  CONSUMERID, STATUS, ORDERDATE from ORDERMANAGER m, STORE s WHERE m.MMSQ = s.MMSQ AND CONSUMERID=? ORDER BY  ORDERDATE DESC";
+
     try {
       pstmt= conn.prepareStatement(sql);
       pstmt.setString(1, LoginSession.id);
@@ -573,7 +592,9 @@ public class OrderDb {
       System.out.println(" -----------------------");
       while(rs.next()) {
         System.out.printf("| %-10s\t|%n", rs.getString("FOODNAME"));
-      }
+
+      } // end while
+
       System.out.println(" -----------------------");
 
     } catch (SQLException e) {
@@ -593,7 +614,8 @@ public class OrderDb {
       int i = 1;
       while(rs.next()) {
         System.out.printf("%d %s %d%n%n", i++, rs.getString("FOODNAME"), rs.getInt("PRICE"));
-      }
+
+      } // end while
     } catch (SQLException e) {
       System.out.println("오류발생");
 
@@ -629,6 +651,7 @@ public class OrderDb {
   // 주문의 상세 정보를 입력하는 메소드
   public void insertOrderDetail(int odsq, int mmsq, String foodName) {
     String sql = "INSERT INTO ORDERDETAIL(ODSQ, MMSQ, FOODNAME) VALUES(?, ?, ?)";
+
     try {
       pstmt = conn.prepareStatement(sql);
       pstmt.setInt(1, odsq);
@@ -638,7 +661,8 @@ public class OrderDb {
         System.out.println("메뉴가 추가되었습니다.");
       } else {
         System.out.println("메뉴 추가에 실패하였습니다.");
-      }
+      } // end if else
+
     } catch(SQLException e) {
       System.out.println("오류발생");
 
@@ -649,14 +673,18 @@ public class OrderDb {
   //고객 탈퇴시 멤버 매니저 테이블에서 삭제하는 메소드
   public void deleteMember(int mmsq) {
     String sql = "DELETE FROM MEMBERMANAGER WHERE MMSQ=?";
+
     try {
       pstmt= conn.prepareStatement(sql);
       pstmt.setInt(1, mmsq);
       if(pstmt.executeUpdate() > 0) {
         System.out.println("탈퇴가 정상적으로 되었습니다.\n");
+
       } else {
         System.out.println("탈퇴에 실패하였습니다.\n");
-      }
+
+      } // end if / else
+
     } catch (SQLException e) {
       System.out.println("오류발생");
 
@@ -668,16 +696,19 @@ public class OrderDb {
   public int getPriceSum(int odsq) {
     String sql = "SELECT SUM(PRICE) AS SUM FROM ORDERDETAIL o, STOREMENU s WHERE ODSQ=? and o.MMSQ=s.MMSQ and  o.FOODNAME=s.FOODNAME";
     int sum = 0;
+
     try {
       pstmt = conn.prepareStatement(sql);
       pstmt.setInt(1, odsq);
       rs = pstmt.executeQuery();
+
       while(rs.next()) {
         sum = rs.getInt("SUM");
-      }
+
+      } // end while
+
     } catch (SQLException e) {
-      // TODO Auto-generated catch block
-      e.printStackTrace();
+      System.out.println("오류발생");
 
     } // end try / catch
 
@@ -685,12 +716,36 @@ public class OrderDb {
 
   } // end Method getPriceSum
 
+  // 가게 공지를 리턴하는 메소드
+  public String getNotice(int storeNum) {
+    String result = "";
+    String sql = "SELECT NOTICE FROM STORE WHERE MMSQ=?";
+
+    try {
+      pstmt = conn.prepareStatement(sql);
+      pstmt.setInt(1, storeNum);
+      rs = pstmt.executeQuery();
+
+      while(rs.next()) {
+        result += rs.getString("NOTICE");
+      } // end while
+
+    } catch (SQLException e) {
+      System.out.println("오류발생");
+
+    }
+
+    return result;
+
+  } // end Method getNotice
+
   // 프로그램 종료시 데이터베이스와의 연결을 해제하는 메소드
   public void closeDb() {
     try {
       if(conn != null) conn.close();
       if(pstmt != null) pstmt.close();
       if(rs != null) rs.close();
+
     } catch (SQLException sqle) {
       System.out.println("데이터베이스 연결 해제 오류");
 
