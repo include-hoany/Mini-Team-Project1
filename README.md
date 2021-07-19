@@ -42,6 +42,7 @@
 - 리뷰보기
 - 회원탈퇴
 - 로그아웃
+
 ---------------------------------------------------------
 
 ## Class And Method 구조
@@ -83,10 +84,6 @@
 ### 디비 관리 클래스
 >class OrderDb
 >- OrderDb()
-
-### 로그인 정보 확인 클래스
->class LoginSession
->- public static void logout()
 >- public void insertMember(String id, String pw, String nickname, String pn, String authority)
 >- public int searchStoreId(String id)
 >- public void insertStoreTable(int mmsq, String storename, String address, String category)
@@ -115,6 +112,11 @@
 >- public int getPriceSum(int odsq)
 >- public String getNotice(int storeNum)
 >- public void closeDb()
+
+### 로그인 정보 확인 클래스
+>class LoginSession
+>- public static void logout()
+
 ---------------------------------------------------------
 
 ## Table 구조
