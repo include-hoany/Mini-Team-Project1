@@ -14,10 +14,10 @@ public class OrderDb {
   PreparedStatement pstmt = null;
   ResultSet rs = null;
 
-  final String user = "";
-  final String pw = "";
+  final String user = "include_hoany";
+  final String pw = "1234";
   final String driver = "oracle.jdbc.driver.OracleDriver";
-  final String url = "jdbc:oracle:thin:@:XE";
+  final String url = "jdbc:oracle:thin:@3.36.124.230:6006:XE";
   final SimpleDateFormat orderdate = new SimpleDateFormat("yyyy년 MM월 dd일 HH시 mm분 ss초");
 
   // OrderDB 생성자
@@ -115,7 +115,7 @@ public class OrderDb {
       } // end if else
 
     } catch (SQLException e) {
-      e.printStackTrace();
+      System.out.println("가게등록실패 이미 등록되어있는 가게 입니다.");
 
     } // end try / catch
 

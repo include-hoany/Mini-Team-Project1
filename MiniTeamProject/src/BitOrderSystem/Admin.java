@@ -72,7 +72,6 @@ public class Admin {
     System.out.print("카테고리 >> ");
     String category = sc.nextLine().trim();
 
-    // 쓰레드 슬립을 사용한 이유는 혹시나 빠르게 디비 연산을 하다보면 돌연사 할까봐...
     try {Thread.sleep(2000);} catch (InterruptedException ic) {}
     db.insertMember(id, pw, nickname, pn, "STORE");
 
@@ -102,6 +101,7 @@ public class Admin {
       String category = sc.nextLine().trim();
       db.updateStoreMemberTable(mmsq, phone);
       db.updateStoreTable(mmsq, storename, address, category);
+      System.out.println("가게 정보가 수정되었습니다.");
 
     } catch(NumberFormatException nfe) {
       System.out.println("숫자만 입력해 주세요... ");
