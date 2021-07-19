@@ -41,7 +41,7 @@ public class Consumer {
               viewReview();
               break;
             case 5:
-              membershipWithdrawal();
+              memberWithdrawal();
               LoginSession.logout();
               break loop;
             case 9:
@@ -211,7 +211,7 @@ public class Consumer {
   } // end enrollConsumer
 
   //고객 회원탈퇴
-  public void membershipWithdrawal() {
+  public void memberWithdrawal() {
     System.out.print("정말 탈퇴 하시겠습니까? (y/n) >> ");
     String choice = sc.nextLine();
 

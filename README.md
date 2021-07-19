@@ -69,7 +69,7 @@
 >- public void viewReview()
 >- public void checkOrderStatus()
 >- public void enrollConsumer()
->- public void membershipWithdrawal()
+>- public void memberWithdrawal()
 
 ### 판매자 클래스
 >class Owner
