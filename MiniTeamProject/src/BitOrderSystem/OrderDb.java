@@ -14,10 +14,10 @@ public class OrderDb {
   PreparedStatement pstmt = null;
   ResultSet rs = null;
 
-  final String user = "include_hoany";
-  final String pw = "1234";
+  final String user = "";
+  final String pw = "";
   final String driver = "oracle.jdbc.driver.OracleDriver";
-  final String url = "jdbc:oracle:thin:@3.36.124.230:6006:XE";
+  final String url = "jdbc:oracle:thin:@:XE";
   final SimpleDateFormat orderdate = new SimpleDateFormat("yyyy년 MM월 dd일 HH시 mm분 ss초");
 
   // OrderDB 생성자
