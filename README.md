@@ -1,14 +1,19 @@
 # Mini-Team-Project1
-# 주제: 음식 방문포장 주문 시스템
+
 ---------------------------------------------------------
 ## 조원
 - 조원: 최환영, 이승철, 박현민
----------------------------------------------------------
 
-## 목적
+---------------------------------------------------------
+# 주제: 음식 방문포장 주문 시스템
 음식점을 방문하여 주문하고 주문한 음식이 완료될때까지 기다리는 수고스러움을 느낄때가 있습니다.
 따라서 음식 방문포장 주문 시스템을 통해 집 또는 사무실에서 음식을 주문하여 음식점에서 주문한 음식이
 완료되면 빠르게 찾아갈 수 있는 정보를 제공하고 불필요한 외부 활동을 줄이는데 목적이 있습니다.
+
+---------------------------------------------------------
+## 목적
+강의내용을 토대로 자바를 통한 데이터베이스 CRUD 구현에 기술적 학습 목적이 있으며, 미니 프로젝트를 진행하며
+프로그램 설계및 구현시 중요한 팀원간 커뮤니케이션을 연습하는데 목적이 있습니다.
 
 ---------------------------------------------------------
 
@@ -48,12 +53,15 @@
 
 ### 관리자 클래스
 >class Admin
+>- Admin()
 >- public void process()
 >- public void enrollStore()
 >- public void modifyStore()
+>- public void membershipWithdrawal()
 
 ### 고객 클래스
 >class Consumer
+>- Consumer()
 >- public void process()
 >- public void Order()
 >- public void enrollReview()
@@ -64,15 +72,21 @@
 
 ### 판매자 클래스
 >class Owner
+>- Owner()
 >- public void process()
 >- public void enrollMenu()
 >- public void modifyMenu()
 >- public void processOrder()
+>- public void OrderDetail()
 >- public void notice()
 
 ### 디비 관리 클래스
 >class OrderDb
 >- OrderDb()
+
+### 로그인 정보 확인 클래스
+>class LoginSession
+>- public static void logout()
 >- public void insertMember(String id, String pw, String nickname, String pn, String authority)
 >- public int searchStoreId(String id)
 >- public void insertStoreTable(int mmsq, String storename, String address, String category)
@@ -82,7 +96,7 @@
 >- public int getLastMMSQ()
 >- public int getLastODSQ()
 >- public void updateStoreTable(int mmsq, String storename, String address, String category)
->- public String[] showMenuNames(int mmsq)
+>- public ArrayList<String> showMenuNames(int mmsq , boolean show)
 >- public void showMenu()
 >- public void registerMenu(String foodName, int foodPrice)
 >- public void alterMenu(String prevFoodName, String foodName, int foodPrice)
@@ -92,16 +106,15 @@
 >- public Integer[] getOrderNum()
 >- public void enrollReviewdb(int mmsq, String reviewComment)
 >- public void showReview(int mmsq)
->- public void showMyOrder()
+>- public ArrayList<Integer> showMyOrder()
+>- public void showMyOrderDetail(int odsq)
 >- public void showMenuList(int mmsq)
 >- public void getReceiptNumber(int storeNumber)
 >- public void insertOrderDetail(int odsq, int mmsq, String foodName)
->- public void deleteMember()
+>- public void deleteMember(int mmsq)
+>- public int getPriceSum(int odsq)
+>- public String getNotice(int storeNum)
 >- public void closeDb()
-
-### 로그인 정보 확인 클래스
->class LoginSession
->- public static void logout()
 ---------------------------------------------------------
 
 ## Table
